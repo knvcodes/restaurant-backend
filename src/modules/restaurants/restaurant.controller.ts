@@ -5,7 +5,7 @@ import { listRestaurants } from './restaurant.service'
 export const restaurantsListing = async(req: Request, res: Response) => {
   try {
     // Your main logic here
-    await listRestaurants()
+    await listRestaurants(req)
     res.json({ message: 'List of restaurants' })
   } catch (error) {
   logger.error({
