@@ -1,23 +1,25 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "module",
+  "main": "dist/server.js",
   "license": "MIT",
+  "scripts": {
+    "dev": "NODE_OPTIONS=--enable-source-maps tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
+  },
   "dependencies": {
     "express": "^5.1.0",
-    "mongoose": "^8.19.1"
-  },
-  "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "build": "tsc",
-    "start": "nodemon --exec ts-node ./server.ts"
+    "mongoose": "^8.19.1",
+    "pino": "^10.0.0",
+    "pino-pretty": "^13.1.2"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
-    "@types/mongoose": "^5.11.97",
     "@types/node": "^24.7.0",
-    "nodemon": "^3.1.10",
     "ts-node-dev": "^2.0.0",
+    "tsx": "^4.20.6",
     "typescript": "^5.9.3"
   }
 }
