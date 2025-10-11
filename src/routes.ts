@@ -5,4 +5,4 @@ const router = express.Router()
 
 router.get('/restaurants/list',restaurantsListing)
 
-module.exports = router
+export default router

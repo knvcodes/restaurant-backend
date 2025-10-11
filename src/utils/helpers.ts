@@ -1,0 +1,3 @@
+const handleErrorLogs = (error: unknown) => {
+  
+};
