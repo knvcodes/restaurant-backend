@@ -1,3 +1,8 @@
-const handleErrorLogs = (error: unknown) => {
-  
+import { Response } from "express";
+
+export const handleResponse = (res: Response, msg: string, data: unknown) => {
+  res.json({
+    message:msg,
+    data
+  })
 };

@@ -1,12 +1,13 @@
 import { Request, Response } from 'express'
 import logger from 'utils/logger'
 import { listRestaurants } from './restaurant.service'
+import { handleResponse } from 'utils/helpers'
 
 export const restaurantsListing = async(req: Request, res: Response) => {
   try {
     // Your main logic here
-    await listRestaurants(req)
-    res.json({ message: 'List of restaurants' })
+    const list = await listRestaurants(req)
+    handleResponse(res, 'List of restaurants', list)
   } catch (error) {
   logger.error({
       message: 'Error in restaurantsListing',
