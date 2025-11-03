@@ -3,13 +3,48 @@ import { withLocation } from "utils/loggerHelper";
 import Restaurant from "./restaurant.model";
 import { Request } from "express";
 
-export const listRestaurants = async(req: Request) => {
+export const listRestaurants = async (req: Request) => {
   try {
-    const list = await Restaurant.find({},{_id: 0, address: 1, borough: 1, cuisine: 1, grades: 1, name: 1, restaurant_id: 1}).limit(10)
+    const list = await Restaurant.find(
+      {},
+      {
+        _id: 0,
+        address: 1,
+        borough: 1,
+        cuisine: 1,
+        grades: 1,
+        name: 1,
+        restaurant_id: 1,
+      }
+    ).limit(10);
     logger.info(JSON.stringify(list, null, 2));
-    return list
+    return list;
   } catch (error) {
     logger.error(withLocation("error:====>", error));
   }
+};
+export const RestaurantDetail = async (req: Request) => {
+  try {
+    console.log(req.params);
+    const { id } = req.params;
 
+    const foundRestaurant = await Restaurant.findOne(
+      {
+        restaurant_id: id,
+      },
+      {
+        _id: 0,
+        address: 1,
+        borough: 1,
+        cuisine: 1,
+        grades: 1,
+        name: 1,
+        restaurant_id: 1,
+      }
+    ).limit(10);
+    logger.info(JSON.stringify(foundRestaurant, null, 2));
+    return foundRestaurant;
+  } catch (error) {
+    logger.error(withLocation("error:====>", error));
+  }
 };
