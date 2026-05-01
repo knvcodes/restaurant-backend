@@ -14,7 +14,11 @@ if (!name) {
 }
 
 const basePath = path.resolve(__dirname, "..");
-const modulePath = path.join(basePath, "src/modules", name);
+const modulePath = path.join(
+  basePath,
+  process.env.MODULE_PATH || "src/modules",
+  name,
+);
 
 const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
