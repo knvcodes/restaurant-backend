@@ -1,4 +1,4 @@
-const restaurantDescriptions = [
+export const restaurantDescriptions: string[] = [
   "Cozy spot serving authentic local cuisine with a modern twist.",
   "Family-friendly restaurant known for generous portions and warm service.",
   "Upscale dining experience with a focus on seasonal ingredients.",
@@ -20,31 +20,3 @@ const restaurantDescriptions = [
   "Rustic ambiance paired with hearty, home-style cooking.",
   "Modern bistro delivering a balance of taste and presentation.",
 ];
-
-function getRandomDescription() {
-  const index = Math.floor(Math.random() * restaurantDescriptions.length);
-  return restaurantDescriptions[index];
-}
-
-export default {
-  async up(db, client) {
-    // TODO write your migration here.
-
-    const restaurants = await db.collection("restaurants").find({}).toArray();
-
-    const bulkOps = restaurants.map((doc) => ({
-      updateOne: {
-        filter: { _id: doc._id },
-        update: {
-          $set: {
-            description: getRandomDescription(),
-          },
-        },
-      },
-    }));
-
-    await db.collection("restaurants").bulkWrite(bulkOps);
-  },
-
-  async down(db, client) {},
-};
