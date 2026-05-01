@@ -1,25 +1,26 @@
 import mongoose, { Schema, Document, Model, Types } from "mongoose";
 
 // Interface
-export interface IDishes extends Document {
+export interface ISupplements extends Document {
   name: string;
   description?: string;
+  price: number;
   isActive: boolean;
   tags?: string[];
   metadata?: Record<string, any>;
   createdAt?: Date;
   updatedAt?: Date;
-  supplements: String[];
-  serving: Record<string, unknown>[];
   restaurantId?: Types.ObjectId; // ✅ relation type
 }
 
 // Schema
-const DishesSchema: Schema<IDishes> = new Schema(
+const SupplementsSchema: Schema<ISupplements> = new Schema(
   {
     name: { type: String, required: true },
 
     description: { type: String },
+
+    price: { type: Number },
 
     isActive: { type: Boolean, default: true },
 
@@ -27,24 +28,6 @@ const DishesSchema: Schema<IDishes> = new Schema(
 
     metadata: { type: Schema.Types.Mixed },
 
-    supplements: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Supplements",
-      },
-    ],
-
-    // Example array of objects
-    serving: [
-      {
-        title: { type: String },
-        value: { type: Number },
-        price: { type: Number },
-        currency: { type: String },
-      },
-    ],
-
-    // Example reference (relation)
     restaurantId: {
       type: Schema.Types.ObjectId,
       ref: "Restaurants",
@@ -54,6 +37,9 @@ const DishesSchema: Schema<IDishes> = new Schema(
 );
 
 // Model
-const Dishes: Model<IDishes> = mongoose.model<IDishes>("Dishes", DishesSchema);
+const Supplements: Model<ISupplements> = mongoose.model<ISupplements>(
+  "Supplements",
+  SupplementsSchema,
+);
 
-export default Dishes;
+export default Supplements;

@@ -26,6 +26,52 @@ function getRandomDescription() {
   return restaurantDescriptions[index];
 }
 
+const currencies = ["INR", "USD", "EUR"];
+
+function getRandomCurrency() {
+  return currencies[Math.floor(Math.random() * currencies.length)];
+}
+
+function getRandomAmount(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function buildMoney(min = 20, max = 500) {
+  return {
+    amount: getRandomAmount(min, max),
+    currency: getRandomCurrency(),
+  };
+}
+
+function getRandomHour(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function buildDeliveryHours() {
+  const startHour = getRandomHour(8, 12); // opens between 8AM–12PM
+  const endHour = getRandomHour(18, 23); // closes between 6PM–11PM
+
+  const from = new Date();
+  from.setHours(startHour, 0, 0, 0);
+
+  const to = new Date();
+  to.setHours(endHour, 0, 0, 0);
+
+  return { from, to };
+}
+
+const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+function buildOpenDays() {
+  const startIndex = Math.floor(Math.random() * 3); // early week
+  const endIndex = Math.floor(Math.random() * 4) + 3; // later week
+
+  return {
+    from: days[startIndex],
+    to: days[endIndex],
+  };
+}
+
 export default {
   async up(db, client) {
     // TODO write your migration here.
@@ -38,6 +84,11 @@ export default {
         update: {
           $set: {
             description: getRandomDescription(),
+            deliveryFee: buildMoney(),
+            cancellationFee: buildMoney(),
+            minimumDelivery: buildMoney(),
+            openDays: buildOpenDays(),
+            deliveryHours: buildDeliveryHours(),
           },
         },
       },

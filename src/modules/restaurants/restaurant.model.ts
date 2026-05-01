@@ -1,5 +1,5 @@
 // src/models/restaurant.model.ts
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose, { Schema, Document, Model, Date } from "mongoose";
 
 // 1. TypeScript interfaces
 interface IGrade {
@@ -15,6 +15,16 @@ export interface IAddress {
   zipcode: string;
 }
 
+export interface IDeliveryHours {
+  from: Date;
+  to: Date;
+}
+
+interface IOpenDays {
+  from: String;
+  to: String;
+}
+
 export interface IRestaurant extends Document {
   restaurant_id: string;
   name: string;
@@ -25,6 +35,23 @@ export interface IRestaurant extends Document {
   createdAt?: Date;
   updatedAt?: Date;
   discription?: string;
+  deliveryHours: IDeliveryHours;
+  openDays: IOpenDays;
+
+  deliveryFee?: {
+    amount: number;
+    currency: string;
+  };
+
+  cancellationFee?: {
+    amount: number;
+    currency: string;
+  };
+
+  minimumDelivery?: {
+    amount: number;
+    currency: string;
+  };
 }
 
 // 2. Schema definitions
@@ -47,6 +74,22 @@ const AddressSchema: Schema<IAddress> = new Schema(
   { _id: false },
 );
 
+const DeliveryHoursSchema: Schema<IDeliveryHours> = new Schema(
+  {
+    from: { type: Date, required: true },
+    to: { type: Date, required: true },
+  },
+  { _id: false },
+);
+
+const OpenDaysSchema: Schema<IOpenDays> = new Schema(
+  {
+    from: { type: String, required: true },
+    to: { type: String, required: true },
+  },
+  { _id: false },
+);
+
 const RestaurantSchema: Schema<IRestaurant> = new Schema(
   {
     restaurant_id: { type: String, required: true, unique: true },
@@ -56,14 +99,30 @@ const RestaurantSchema: Schema<IRestaurant> = new Schema(
     address: { type: AddressSchema, required: true },
     grades: { type: [GradeSchema], default: [] },
     discription: { type: String, required: false },
+    deliveryHours: { type: DeliveryHoursSchema, required: true },
+    openDays: { type: OpenDaysSchema, required: true },
+    deliveryFee: {
+      amount: { type: Number, default: 0 },
+      currency: { type: String, enum: ["INR", "USD", "EUR"], default: "USD" },
+    },
+
+    cancellationFee: {
+      amount: { type: Number, default: 0 },
+      currency: { type: String, enum: ["INR", "USD", "EUR"], default: "USD" },
+    },
+
+    minimumDelivery: {
+      amount: { type: Number, default: 0 },
+      currency: { type: String, enum: ["INR", "USD", "EUR"], default: "USD" },
+    },
   },
   { timestamps: true }, // adds createdAt and updatedAt
 );
 
 // 3. Model
-const Restaurant: Model<IRestaurant> = mongoose.model<IRestaurant>(
-  "Restaurant",
+const Restaurants: Model<IRestaurant> = mongoose.model<IRestaurant>(
+  "Restaurants",
   RestaurantSchema,
 );
 
-export default Restaurant;
+export default Restaurants;

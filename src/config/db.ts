@@ -25,7 +25,6 @@ const loadModels = async () => {
     if (fs.existsSync(modelPath)) {
       // dynamic import (ESM)
       await import(modelPath);
-      console.log(`Loaded model: ${moduleName}`);
     }
   }
 };

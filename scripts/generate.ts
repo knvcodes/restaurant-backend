@@ -116,9 +116,9 @@ export interface I${entity} extends Document {
 // Schema
 const ${entity}Schema: Schema<I${entity}> = new Schema(
   {
-    name: { type: String, required: true },
+    name: { type: String, required: true, minlength: 3, maxlength: 50 },
 
-    description: { type: String },
+    description: { type: String, minlength: 3, maxlength: 50 },
 
     age: { type: Number },
 
