@@ -1,12 +1,8 @@
 import express from "express";
-import {
-  restaurantDetails,
-  restaurantsListing,
-} from "./modules/restaurants/restaurant.controller";
+import restaurantRouter from "modules/restaurants/restaurant.routes";
 
 const router = express.Router();
 
-router.get("/restaurants/list", restaurantsListing);
-router.get("/restaurants/:id", restaurantDetails);
+router.use("/restaurants", restaurantRouter);
 
 export default router;

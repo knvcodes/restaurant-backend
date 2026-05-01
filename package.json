@@ -8,7 +8,8 @@
     "dev": "NODE_OPTIONS=--enable-source-maps tsx watch src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "db:sync": "npx migrate-mongo down && npx migrate-mongo up"
+    "db:sync": "npx migrate-mongo down && npx migrate-mongo up",
+    "generate": "ts-node scripts/generate.ts"
   },
   "dependencies": {
     "cors": "^2.8.5",
