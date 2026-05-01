@@ -102,18 +102,27 @@ const RestaurantSchema: Schema<IRestaurant> = new Schema(
     deliveryHours: { type: DeliveryHoursSchema, required: true },
     openDays: { type: OpenDaysSchema, required: true },
     deliveryFee: {
-      amount: { type: Number, default: 0 },
-      currency: { type: String, enum: ["INR", "USD", "EUR"], default: "USD" },
+      type: {
+        amount: { type: Number, default: 0 },
+        currency: { type: String, enum: ["INR", "USD", "EUR"], default: "USD" },
+      },
+      default: { amount: 0, currency: "USD" },
     },
 
     cancellationFee: {
-      amount: { type: Number, default: 0 },
-      currency: { type: String, enum: ["INR", "USD", "EUR"], default: "USD" },
+      type: {
+        amount: { type: Number, default: 0 },
+        currency: { type: String, enum: ["INR", "USD", "EUR"], default: "USD" },
+      },
+      default: { amount: 0, currency: "USD" },
     },
 
     minimumDelivery: {
-      amount: { type: Number, default: 0 },
-      currency: { type: String, enum: ["INR", "USD", "EUR"], default: "USD" },
+      type: {
+        amount: { type: Number, default: 0 },
+        currency: { type: String, enum: ["INR", "USD", "EUR"], default: "USD" },
+      },
+      default: { amount: 0, currency: "USD" },
     },
   },
   { timestamps: true }, // adds createdAt and updatedAt
