@@ -4,6 +4,10 @@ import { connectDB } from "./config/db.ts";
 import logger from "./utils/logger.ts";
 import { withLocation } from "./utils/loggerHelper.ts";
 import router from "routes.ts";
+import dotenv from "dotenv";
+
+// integrate env
+dotenv.config();
 
 const PORT = 3000;
 const app = express();
@@ -18,7 +22,7 @@ app.use(
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true, // optional if you send cookies or auth headers
-  })
+  }),
 );
 
 // Middleware to parse JSON

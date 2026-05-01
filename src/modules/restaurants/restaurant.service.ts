@@ -15,9 +15,8 @@ export const listRestaurants = async (req: Request) => {
         grades: 1,
         name: 1,
         restaurant_id: 1,
-      }
+      },
     ).limit(10);
-    logger.info(JSON.stringify(list, null, 2));
     return list;
   } catch (error) {
     logger.error(withLocation("error:====>", error));
@@ -25,7 +24,6 @@ export const listRestaurants = async (req: Request) => {
 };
 export const RestaurantDetail = async (req: Request) => {
   try {
-    console.log(req.params);
     const { id } = req.params;
 
     const foundRestaurant = await Restaurant.findOne(
@@ -40,9 +38,8 @@ export const RestaurantDetail = async (req: Request) => {
         grades: 1,
         name: 1,
         restaurant_id: 1,
-      }
+      },
     ).limit(10);
-    logger.info(JSON.stringify(foundRestaurant, null, 2));
     return foundRestaurant;
   } catch (error) {
     logger.error(withLocation("error:====>", error));
