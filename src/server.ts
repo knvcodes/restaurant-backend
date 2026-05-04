@@ -31,9 +31,6 @@ app.use(express.json());
 (async () => {
   try {
     // Log env inside async block
-    console.log("check===> MINIO_ENDPOINT:", process.env.MINIO_ENDPOINT);
-    console.log("check===> S3_BUCKET_NAME:", process.env.S3_BUCKET_NAME);
-    console.log("check===> MONGO_URI:", process.env.MONGO_URI);
 
     // Initialize MinIO
     const storageService = new StorageService(s3Client, BUCKET_NAME);

@@ -1,8 +1,8 @@
-import sharp from "sharp";
+import sharp, { FormatEnum } from "sharp";
 import { v4 as uuidv4 } from "uuid";
 import path from "path";
 import StorageService from "./storage.service";
-import { ImageUploadResult, MulterFile } from "../utils/types";
+import { ImageUploadResult, UploadResult, MulterFile } from "../utils/types";
 
 export class ImageService {
   private storage: StorageService;
@@ -71,7 +71,7 @@ export class ImageService {
         fit: options.resize?.fit || "cover",
         withoutEnlargement: true,
       })
-      .toFormat(ext as any, { quality: options.quality || 80 })
+      .toFormat(ext as keyof FormatEnum, { quality: options.quality || 80 })
       .toBuffer();
 
     // Get image info
@@ -87,14 +87,14 @@ export class ImageService {
       },
     });
 
-    let thumbnailResult: ImageUploadResult | undefined;
+    let thumbnailResult: UploadResult | undefined;
 
     // Generate thumbnail if requested
     if (options.generateThumbnail) {
       const thumbnailKey = `${folder}/${id}-thumb.${ext}`;
       const thumbnailBuffer = await sharp(file.buffer)
         .resize(this.THUMBNAIL_SIZE, this.THUMBNAIL_SIZE, { fit: "cover" })
-        .toFormat(ext as any, { quality: 70 })
+        .toFormat(ext as keyof FormatEnum, { quality: 70 })
         .toBuffer();
 
       thumbnailResult = await this.storage.uploadBuffer(
@@ -129,62 +129,6 @@ export class ImageService {
     return await Promise.all(
       files.map((file) => this.uploadImage(file, options)),
     );
-  }
-
-  // ============================================
-  // RESTAURANT-SPECIFIC HELPERS
-  // ============================================
-
-  async uploadRestaurantLogo(
-    file: MulterFile,
-    restaurantId: string,
-  ): Promise<ImageUploadResult> {
-    return this.uploadImage(file, {
-      folder: `restaurants/${restaurantId}/logo`,
-      resize: { width: 400, height: 400, fit: "contain" },
-      quality: 90,
-      generateThumbnail: true,
-      metadata: { restaurantId, type: "logo" },
-    });
-  }
-
-  async uploadRestaurantBanner(
-    file: MulterFile,
-    restaurantId: string,
-  ): Promise<ImageUploadResult> {
-    return this.uploadImage(file, {
-      folder: `restaurants/${restaurantId}/banner`,
-      resize: { width: 1200, height: 400, fit: "cover" },
-      quality: 85,
-      metadata: { restaurantId, type: "banner" },
-    });
-  }
-
-  async uploadMenuItemImage(
-    file: MulterFile,
-    restaurantId: string,
-    itemId: string,
-  ): Promise<ImageUploadResult> {
-    return this.uploadImage(file, {
-      folder: `restaurants/${restaurantId}/menu/${itemId}`,
-      resize: { width: 600, height: 600, fit: "cover" },
-      quality: 85,
-      generateThumbnail: true,
-      metadata: { restaurantId, itemId, type: "menu-item" },
-    });
-  }
-
-  async uploadUserAvatar(
-    file: MulterFile,
-    userId: string,
-  ): Promise<ImageUploadResult> {
-    return this.uploadImage(file, {
-      folder: `users/${userId}/avatar`,
-      resize: { width: 200, height: 200, fit: "cover" },
-      quality: 90,
-      generateThumbnail: false,
-      metadata: { userId, type: "avatar" },
-    });
   }
 
   // ============================================
