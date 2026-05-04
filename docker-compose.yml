@@ -25,6 +25,7 @@ services:
   backend:
     build: .
     container_name: backend
+    tty: true
     ports:
       - "3000:3000"
     environment:
@@ -36,6 +37,7 @@ services:
       - MONGO_URI=mongodb://mongo:27017/myapp # ← service name
       - DB_NAME=myapp
       - MODULE_PATH=src/modules
+
     depends_on:
       - mongo
       - minio

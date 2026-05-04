@@ -1,19 +1,15 @@
 import { S3Client } from "@aws-sdk/client-s3";
 
 const s3Client = new S3Client({
-  region: "us-east-1", // MinIO ignores this, but required
-  endpoint: "http://localhost:9000",
+  region: "us-east-1",
+  endpoint: process.env.MINIO_ENDPOINT || "http://localhost:9000",
   credentials: {
-    accessKeyId: "admin",
-    secretAccessKey: "password123",
+    accessKeyId: process.env.MINIO_ACCESS_KEY || "admin",
+    secretAccessKey: process.env.MINIO_SECRET_KEY || "password123",
   },
-  forcePathStyle: true, // CRITICAL: MinIO uses path-style URLs
-  // Optional: increase timeouts for large files
-  requestHandler: {
-    requestTimeout: 300000, // 5 minutes
-  },
+  forcePathStyle: true,
 });
 
-const BUCKET_NAME = "my-bucket";
+const BUCKET_NAME = process.env.S3_BUCKET_NAME || "my-bucket";
 
 export { s3Client, BUCKET_NAME };

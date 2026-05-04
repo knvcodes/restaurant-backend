@@ -9,25 +9,33 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "db:sync": "npx migrate-mongo down && npx migrate-mongo up",
-    "generate": "ts-node scripts/generate.ts"
+    "generate": "ts-node scripts/generate.ts",
+    "docker:dev": "docker compose down && docker compose up --watch",
+    "docker:clean": "docker compose build backend"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1041.0",
+    "@aws-sdk/lib-storage": "^3.1041.0",
     "@aws-sdk/s3-request-presigner": "^3.1041.0",
     "cors": "^2.8.5",
     "dotenv": "^17.4.2",
     "express": "^5.1.0",
     "migrate-mongo": "^14.0.7",
     "mongoose": "^8.19.1",
+    "multer": "^2.1.1",
     "pino": "^10.0.0",
     "pino-pretty": "^13.1.2",
-    "ts-node": "^10.9.2"
+    "sharp": "^0.34.5",
+    "ts-node": "^10.9.2",
+    "uuid": "^14.0.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/mongoose": "^5.11.97",
+    "@types/multer": "^2.1.0",
     "@types/node": "^24.7.1",
+    "@types/uuid": "^10.0.0",
     "ts-node-dev": "^2.0.0",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3"
