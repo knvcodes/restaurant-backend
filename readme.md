@@ -216,3 +216,19 @@ GET, POST, PUT, DELETE, OPTIONS
 - MongoDB indexes are synced on startup with `mongoose.connection.syncIndexes()`.
 - Path aliases are configured from the project root with `baseUrl: "./"` and `paths: { "*": ["src/*"] }`.
 - `npm run start` expects `dist/server.js`. The current TypeScript config has `noEmit: true`, so adjust the build config if you want to produce a production `dist` folder.
+
+### Start minio server and install
+
+docker run -p 9000:9000 -p 9001:9001 \
+ --name minio \
+ -v ~/minio-data:/data \
+ -e "MINIO_ROOT_USER=admin" \
+ -e "MINIO_ROOT_PASSWORD=password123" \
+ quay.io/minio/minio server /data --console-address ":9001"
+
+Access:
+API: http://localhost:9000
+Console: http://localhost:9001 (login: admin / password123)
+Go create a bucket called my-bucket in the console before running code.
+
+npm install @aws-sdk/client-s3 @aws-sdk/s3-request-presigner
