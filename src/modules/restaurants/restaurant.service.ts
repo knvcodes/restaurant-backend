@@ -15,6 +15,11 @@ export const listRestaurants = async (req: Request) => {
         grades: 1,
         name: 1,
         restaurant_id: 1,
+        cancellationFee: 1,
+        deliveryFee: 1,
+        deliveryHours: 1,
+        minimumDelivery: 1,
+        openDays: 1,
       },
     ).limit(10);
     return list;
@@ -22,6 +27,7 @@ export const listRestaurants = async (req: Request) => {
     logger.error(withLocation("error:====>", error));
   }
 };
+
 export const RestaurantDetail = async (req: Request) => {
   try {
     const { id } = req.params;
@@ -38,8 +44,16 @@ export const RestaurantDetail = async (req: Request) => {
         grades: 1,
         name: 1,
         restaurant_id: 1,
+        cancellationFee: 1,
+        deliveryFee: 1,
+        deliveryHours: 1,
+        minimumDelivery: 1,
+        openDays: 1,
       },
     ).limit(10);
+
+    console.info("foundRestaurant===>", foundRestaurant);
+
     return foundRestaurant;
   } catch (error) {
     logger.error(withLocation("error:====>", error));

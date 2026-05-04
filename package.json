@@ -10,7 +10,7 @@
     "start": "node dist/server.js",
     "db:sync": "npx migrate-mongo down && npx migrate-mongo up",
     "generate": "ts-node scripts/generate.ts",
-    "docker:dev": "docker compose down && docker compose up --watch",
+    "docker:dev": "docker compose down && docker compose up --watch --build",
     "docker:clean": "docker compose build backend"
   },
   "dependencies": {
