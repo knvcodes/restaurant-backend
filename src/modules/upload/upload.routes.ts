@@ -85,15 +85,15 @@ router.post(
 // DELETE
 // ============================================
 
-// router.delete("/*key", async (req: Request, res: Response) => {
-//   try {
-//     const imageService = req.app.locals.imageService as ImageService;
-//     const key = (req.params.key as unknown as string[]).join("/");
-//     await imageService.deleteImage(key);
-//     res.json({ success: true, deleted: key });
-//   } catch (err: any) {
-//     res.status(500).json({ error: err.message });
-//   }
-// });
+router.delete("/*key", async (req: Request, res: Response) => {
+  try {
+    const imageService = req.app.locals.imageService as ImageService;
+    const key = (req.params.key as unknown as string[]).join("/");
+    await imageService.deleteImage(key);
+    res.json({ success: true, deleted: key });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 export default router;

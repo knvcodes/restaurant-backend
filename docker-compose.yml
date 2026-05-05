@@ -1,7 +1,12 @@
-version: "3.8"
-
 services:
   mongo:
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     image: mongo:7
     container_name: mongo
     ports:
@@ -9,38 +14,54 @@ services:
     volumes:
       - mongo_data:/data/db
 
+  minio-init:
+    image: quay.io/minio/mc
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      sleep 3;
+      mc alias set local http://minio:9000 admin password123;
+      mc mb local/my-bucket || true;
+      mc anonymous set download local/my-bucket || true;
+      "
+    restart: "no"
+
   minio:
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     image: quay.io/minio/minio
     container_name: minio
     ports:
       - "9000:9000"
       - "9001:9001"
-    environment:
-      MINIO_ROOT_USER: admin
-      MINIO_ROOT_PASSWORD: password123
+    env_file:
+      - .env
     volumes:
       - minio_data:/data
     command: server /data --console-address ":9001"
 
   backend:
+    restart: unless-stopped
     build: .
     container_name: backend
     tty: true
     ports:
       - "3000:3000"
-    environment:
-      - NODE_ENV=development
-      - MINIO_ENDPOINT=http://minio:9000
-      - MINIO_ACCESS_KEY=admin
-      - MINIO_SECRET_KEY=password123
-      - S3_BUCKET_NAME=my-bucket
-      - MONGO_URI=mongodb://mongo:27017/myapp # ← service name
-      - DB_NAME=myapp
-      - MODULE_PATH=src/modules
+    env_file:
+      - .env
 
     depends_on:
-      - mongo
-      - minio
+      mongo:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
     develop:
       watch:
         - action: sync
