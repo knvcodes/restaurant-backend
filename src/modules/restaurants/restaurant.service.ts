@@ -5,8 +5,24 @@ import { Request } from "express";
 
 export const listRestaurants = async (req: Request) => {
   try {
+    const { search = null, limit = 10 } = <Record<string, string | number>>(
+      req.query
+    );
+
+    let where = <
+      Record<string, string | number | Record<string, string | number>>
+    >{};
+
+    if (search) {
+      where.name = { $like: search };
+    }
+
+    console.log("where===>", where);
+
     const list = await Restaurant.find(
-      {},
+      {
+        ...where,
+      },
       {
         _id: 0,
         address: 1,
@@ -21,7 +37,7 @@ export const listRestaurants = async (req: Request) => {
         minimumDelivery: 1,
         openDays: 1,
       },
-    ).limit(10);
+    ).limit(Number(limit));
     return list;
   } catch (error) {
     logger.error(withLocation("error:====>", error));
