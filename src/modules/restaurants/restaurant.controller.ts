@@ -5,8 +5,6 @@ import { handleResponse } from "utils/helpers";
 
 export const restaurantsListing = async (req: Request, res: Response) => {
   try {
-    console.log("req.query===>", req.query);
-
     // Your main logic here
     const list = await listRestaurants(req);
     handleResponse(res, "List of restaurants", list);

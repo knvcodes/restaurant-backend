@@ -11,23 +11,20 @@ export const listRestaurants = async (req: Request) => {
     );
 
     let where = <
-      Record<string, string | number | Record<string, string | number>>
+      | Record<string, string | number | Record<string, string | number>>
+      | Record<string, unknown>[]
     >{};
 
     if (search) {
-      where.name = { $like: search };
+      where["$or"] = [
+        { name: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
+      ];
     }
 
-    console.log("where 11===>", where);
-
-    const list = await Restaurant.find(
-      {
-        ...where,
-      },
-      {
-        // _id: 0,
-      },
-    ).limit(Number(limit));
+    const list = await Restaurant.find({
+      ...where,
+    }).limit(Number(limit));
     return list;
   } catch (error) {
     errorLogger(error);
@@ -38,14 +35,9 @@ export const RestaurantDetail = async (req: Request) => {
   try {
     const { id } = req.params;
 
-    const foundRestaurant = await Restaurant.findOne(
-      {
-        restaurant_id: id,
-      },
-      {
-        _id: 0,
-      },
-    ).limit(10);
+    const foundRestaurant = await Restaurant.findOne({
+      restaurant_id: id,
+    }).limit(10);
 
     console.info("foundRestaurant===>", foundRestaurant);
 
