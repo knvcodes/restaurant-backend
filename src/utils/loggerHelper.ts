@@ -11,8 +11,8 @@ export function withLocation(...args: any[]): string {
   if (stack) {
     const lines = stack
       .split("\n")
-      .map(l => l.trim())
-      .filter(l => !l.includes("node_modules"));
+      .map((l) => l.trim())
+      .filter((l) => !l.includes("node_modules"));
 
     // Skip the first line ("Error") and helper frames
     const callerLine = lines[2] || lines[1] || lines[0];
@@ -26,16 +26,24 @@ export function withLocation(...args: any[]): string {
   }
 
   // Combine all arguments like console.log does
-  const message = args.map(arg => {
-    if (typeof arg === "object") {
-      try {
-        return JSON.stringify(arg);
-      } catch {
-        return String(arg);
+  const message = args
+    .map((arg) => {
+      // Handle Error instances explicitly
+      if (arg instanceof Error) {
+        return arg.stack || arg.message || String(arg);
       }
-    }
-    return String(arg);
-  }).join(" ");
+
+      if (typeof arg === "object") {
+        try {
+          console.log("here===>", arg);
+          return JSON.stringify(arg);
+        } catch {
+          return String(arg);
+        }
+      }
+      return String(arg);
+    })
+    .join(" ");
 
   return `${location} ${message}`;
 }

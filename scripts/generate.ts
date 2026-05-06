@@ -70,14 +70,15 @@ export const ${name}sListing = async (req: Request, res: Response) => {
 
 const serviceTemplate = `
 import logger from "utils/logger";
-import { withLocation } from "utils/loggerHelper";
+import { withLocation } from "utils/helpers";
 import { Request } from "express";
 
 export const getAll = async (req: Request) => {
   try {
    
   } catch (error) {
-    logger.error(withLocation("error:====>", error));
+    errorLogger(error);
+
   }
 };
 
@@ -148,7 +149,22 @@ const ${entity}Schema: Schema<I${entity}> = new Schema(
       ref: "User",
     },
   },
-  { timestamps: true }
+  { 
+    timestamps: true,
+
+    toJSON: {
+      transform(doc, ret) {
+        delete ret._id;
+        delete ret.__v; // bonus garbage removal
+      },
+    },
+    toObject: {
+      transform(doc, ret) {
+        delete ret._id;
+        delete ret.__v;
+      },
+    },
+  }
 );
 
 // Model

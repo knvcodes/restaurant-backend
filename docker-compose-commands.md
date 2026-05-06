@@ -19,3 +19,6 @@ docker compose restart [service]
 REBUILD AFTER package.json CHANGE
 docker compose build [service]
 docker compose up [service] --watch
+
+WATCH LOGS
+docker compose logs -f backend

@@ -33,7 +33,22 @@ const SupplementsSchema: Schema<ISupplements> = new Schema(
       ref: "Restaurants",
     },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+
+    toJSON: {
+      transform(doc, ret) {
+        delete ret._id;
+        delete ret.__v; // bonus garbage removal
+      },
+    },
+    toObject: {
+      transform(doc, ret) {
+        delete ret._id;
+        delete ret.__v;
+      },
+    },
+  },
 );
 
 // Model

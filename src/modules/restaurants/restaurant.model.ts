@@ -125,7 +125,21 @@ const RestaurantSchema: Schema<IRestaurant> = new Schema(
       default: { amount: 0, currency: "USD" },
     },
   },
-  { timestamps: true }, // adds createdAt and updatedAt
+  {
+    timestamps: true,
+    toJSON: {
+      transform(doc, ret) {
+        delete ret._id;
+        delete ret.__v; // bonus garbage removal
+      },
+    },
+    toObject: {
+      transform(doc, ret) {
+        delete ret._id;
+        delete ret.__v;
+      },
+    },
+  }, // adds createdAt and updatedAt
 );
 
 // 3. Model

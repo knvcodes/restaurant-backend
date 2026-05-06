@@ -50,7 +50,22 @@ const DishesSchema: Schema<IDishes> = new Schema(
       ref: "Restaurants",
     },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+
+    toJSON: {
+      transform(doc, ret) {
+        delete ret._id;
+        delete ret.__v; // bonus garbage removal
+      },
+    },
+    toObject: {
+      transform(doc, ret) {
+        delete ret._id;
+        delete ret.__v;
+      },
+    },
+  },
 );
 
 // Model

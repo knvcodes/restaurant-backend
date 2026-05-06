@@ -2,6 +2,7 @@ import logger from "utils/logger";
 import { withLocation } from "utils/loggerHelper";
 import Restaurant from "./restaurant.model";
 import { Request } from "express";
+import { errorLogger } from "utils/helpers";
 
 export const listRestaurants = async (req: Request) => {
   try {
@@ -17,30 +18,19 @@ export const listRestaurants = async (req: Request) => {
       where.name = { $like: search };
     }
 
-    console.log("where===>", where);
+    console.log("where 11===>", where);
 
     const list = await Restaurant.find(
       {
         ...where,
       },
       {
-        _id: 0,
-        address: 1,
-        borough: 1,
-        cuisine: 1,
-        grades: 1,
-        name: 1,
-        restaurant_id: 1,
-        cancellationFee: 1,
-        deliveryFee: 1,
-        deliveryHours: 1,
-        minimumDelivery: 1,
-        openDays: 1,
+        // _id: 0,
       },
     ).limit(Number(limit));
     return list;
   } catch (error) {
-    logger.error(withLocation("error:====>", error));
+    errorLogger(error);
   }
 };
 
@@ -54,17 +44,6 @@ export const RestaurantDetail = async (req: Request) => {
       },
       {
         _id: 0,
-        address: 1,
-        borough: 1,
-        cuisine: 1,
-        grades: 1,
-        name: 1,
-        restaurant_id: 1,
-        cancellationFee: 1,
-        deliveryFee: 1,
-        deliveryHours: 1,
-        minimumDelivery: 1,
-        openDays: 1,
       },
     ).limit(10);
 
@@ -72,6 +51,6 @@ export const RestaurantDetail = async (req: Request) => {
 
     return foundRestaurant;
   } catch (error) {
-    logger.error(withLocation("error:====>", error));
+    errorLogger(error);
   }
 };
