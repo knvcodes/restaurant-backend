@@ -32,11 +32,37 @@ if (fs.existsSync(modulePath) && overwriteFiles == undefined) {
 
 // File paths
 const controllerPath = path.join(modulePath, `${name}.controller.ts`);
+const validatePath = path.join(modulePath, `${name}.validate.ts`);
 const servicePath = path.join(modulePath, `${name}.service.ts`);
 const routesPath = path.join(modulePath, `${name}.routes.ts`);
 const modelPath = path.join(modulePath, `${name}.model.ts`);
 
 // Templates
+
+const validateTemplate = `
+import { z } from "zod";
+import mongoose from "mongoose";
+
+const objectId = z.string().refine(
+  (val) => mongoose.Types.ObjectId.isValid(val),
+  { message: "Invalid ObjectId" }
+);
+
+// Combined schema for routes that need body + params + query
+export const getDishesByRestaurantSchema = z.object({
+  body: z.object({}), // empty if no body expected
+  
+  params: z.object({
+    restaurantId: objectId,
+  }),
+  
+  query: z.object({
+    page: z.coerce.number().positive().default(1),
+    limit: z.coerce.number().positive().max(100).default(10),
+    sort: z.enum(["name", "price", "createdAt"]).optional(),
+  }),
+});
+`;
 
 const controllerTemplate = `
 import { Request, Response } from "express";
@@ -181,6 +207,7 @@ fs.mkdirSync(modulePath, { recursive: true });
 
 // Write files
 fs.writeFileSync(controllerPath, controllerTemplate.trim());
+fs.writeFileSync(validatePath, validateTemplate.trim());
 fs.writeFileSync(servicePath, serviceTemplate.trim());
 fs.writeFileSync(routesPath, routesTemplate.trim());
 fs.writeFileSync(modelPath, modelTemplate.trim());
