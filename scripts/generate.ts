@@ -70,7 +70,7 @@ export const ${name}sListing = async (req: Request, res: Response) => {
 
 const serviceTemplate = `
 import logger from "utils/logger";
-import { withLocation } from "utils/helpers";
+import { errorLogger } from "utils/helpers";
 import { Request } from "express";
 
 export const getAll = async (req: Request) => {

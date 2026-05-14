@@ -1,8 +1,9 @@
 import express from "express";
-import { dishessListing } from "./dishes.controller";
+import { addDish, dishesListing } from "./dishes.controller";
 
 const dishesRouter = express.Router();
 
-dishesRouter.get("/list", dishessListing);
+dishesRouter.get("/list", dishesListing);
+dishesRouter.post("/add", addDish);
 
 export default dishesRouter;

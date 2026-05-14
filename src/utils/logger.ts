@@ -1,25 +1,15 @@
-import pino, { LoggerOptions, Logger } from "pino";
+import pino, { LoggerOptions, Logger, LogFn } from "pino";
+
+// Ensure logs directory exists
+import fs from "fs";
 import path from "path";
 
-const getCallerInfo = () => {
-  const stack = new Error().stack;
-  if (!stack) return {};
+const logDir = process.env.LOGS_DIR || path.join(process.cwd(), "logs");
+if (!fs.existsSync(logDir)) {
+  fs.mkdirSync(logDir, { recursive: true });
+}
 
-  const lines = stack
-    .split("\n")
-    .filter(l => l.includes(process.cwd())); // only your project files
-
-  const callerLine = lines[1] || lines[0];
-  const match = callerLine.match(/\((.*):(\d+):(\d+)\)/);
-  if (!match) return {};
-
-  return {
-    file: path.basename(match[1]),
-    line: match[2],
-  };
-};
-
-
+// Your original options — unchanged
 const options: LoggerOptions = {
   level: process.env.LOG_LEVEL || "info",
 
@@ -32,16 +22,35 @@ const options: LoggerOptions = {
   },
 
   base: { pid: false },
-
-  /**
-   * mixin runs BEFORE every log.
-   * Anything returned is merged into the log object.
-   */
-  // mixin() {
-  //   return getCallerInfo();
-  // },
 };
 
-const logger: Logger = pino(options);
+// Pretty console logger (your existing feature)
+const consoleLogger: Logger = pino(options);
+
+// File logger for errors only
+const fileLogger: Logger = pino(
+  {
+    level: "error",
+    base: { pid: false },
+  },
+  pino.destination({
+    dest: path.join(logDir, "error.log"),
+    append: true,
+    sync: true,
+  }),
+);
+
+// Combined logger that writes to both
+const logger: Logger = Object.create(consoleLogger) as Logger;
+
+logger.error = ((...args: Parameters<LogFn>): void => {
+  consoleLogger.error(...args);
+  fileLogger.error(...args);
+}) as LogFn;
+
+logger.fatal = ((...args: Parameters<LogFn>): void => {
+  consoleLogger.fatal(...args);
+  fileLogger.fatal(...args);
+}) as LogFn;
 
 export default logger;

@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import { connectDB } from "./config/db.ts";
 import logger from "./utils/logger.ts";
@@ -7,6 +7,7 @@ import dotenv from "dotenv";
 import StorageService from "services/storage.service.ts";
 import ImageService from "services/image.service.ts";
 import { BUCKET_NAME, s3Client } from "config/s3.ts";
+import { globalErrorHandler } from "utils/errors.ts";
 
 // integrate env
 dotenv.config();
@@ -53,6 +54,9 @@ app.use(express.json());
     });
 
     app.use("/api", router);
+
+    // Global error handler
+    app.use(globalErrorHandler);
 
     // Start server
     app.listen(PORT, () => {

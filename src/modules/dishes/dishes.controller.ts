@@ -2,15 +2,34 @@ import { Request, Response } from "express";
 import * as DishesService from "./dishes.service";
 import { handleResponse } from "utils/helpers";
 import logger from "utils/logger";
+import { message } from "utils/messages";
 
-
-
-export const dishessListing = async (req: Request, res: Response) => {
+export const dishesListing = async (req: Request, res: Response) => {
   try {
     // handleResponse(res, "List of dishes");
   } catch (error) {
     logger.error({
       message: "Error in dishesListing",
+      error: error instanceof Error ? error.message : error,
+      stack: error instanceof Error ? error.stack : undefined,
+      route: req.originalUrl,
+      method: req.method,
+      body: req.body,
+    });
+    res.status(500).json({
+      message: "Internal Server Error",
+      error: (error as Error).message,
+    });
+  }
+};
+
+export const addDish = async (req: Request, res: Response) => {
+  try {
+    const addDish = await DishesService.addDish(req);
+    handleResponse(res, message.success.addDish, addDish);
+  } catch (error) {
+    logger.error({
+      message: "Error in addDish",
       error: error instanceof Error ? error.message : error,
       stack: error instanceof Error ? error.stack : undefined,
       route: req.originalUrl,

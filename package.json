@@ -12,7 +12,9 @@
     "db:sync:docker": "docker compose exec backend npx migrate-mongo down && docker compose exec backend npx migrate-mongo up",
     "generate": "ts-node scripts/generate.ts",
     "docker:dev": "docker compose down && docker compose up --watch --build",
-    "docker:clean": "docker compose build backend"
+    "docker:clean": "docker compose build backend",
+    "docker:logs": "docker compose logs -f backend",
+    "check:gitconfig": "git config user.name && git config user.email"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1041.0",

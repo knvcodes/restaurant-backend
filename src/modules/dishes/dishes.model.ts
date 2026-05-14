@@ -31,6 +31,7 @@ const DishesSchema: Schema<IDishes> = new Schema(
       {
         type: Schema.Types.ObjectId,
         ref: "Supplements",
+        require: false,
       },
     ],
 
