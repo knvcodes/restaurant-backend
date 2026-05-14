@@ -6,6 +6,6 @@
 To be done
 
 1. setup local file s3 server on docker with minio
-2. create seeds for dishes model, supplements model
-3. create listing apis for restaurant filters
-4. create api to add restaurant, dishes and supplements
+2. create listing apis for restaurant filters
+3. create api to add restaurant, dishes and supplements
+4. add validations for apis
