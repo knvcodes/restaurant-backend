@@ -59,6 +59,7 @@ services:
     volumes:
       - ./src:/app/src
       - ./logs:/app/logs # ✅ Add this — persists logs on host
+      - ./seeders:/app/seeders # ← add this
 
     depends_on:
       mongo:

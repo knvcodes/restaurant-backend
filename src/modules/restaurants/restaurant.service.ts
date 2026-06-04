@@ -1,10 +1,7 @@
-import logger from "utils/logger";
-import { withLocation } from "utils/loggerHelper";
 import Restaurant from "./restaurant.model";
 import { Request } from "express";
 import { errorLogger } from "utils/helpers";
-import mongoose from "mongoose";
-import { title } from "process";
+import { FilterQuery } from "mongoose";
 
 export const listRestaurants = async (req: Request) => {
   try {
@@ -12,10 +9,7 @@ export const listRestaurants = async (req: Request) => {
       req.query
     );
 
-    let where = <
-      | Record<string, string | number | Record<string, string | number>>
-      | Record<string, unknown>[]
-    >{};
+    const where: FilterQuery<typeof Restaurant> = {};
 
     if (search) {
       where["$or"] = [
@@ -27,6 +21,8 @@ export const listRestaurants = async (req: Request) => {
     const list = await Restaurant.find({
       ...where,
     }).limit(Number(limit));
+
+    console.info("list:===>", list);
     return list;
   } catch (error) {
     errorLogger(error);
@@ -37,9 +33,11 @@ export const RestaurantDetail = async (req: Request) => {
   try {
     const { id } = req.params;
 
+    console.info("id:===>", id);
+
     const foundRestaurant = await Restaurant.aggregate([
       {
-        $match: { _id: new mongoose.Types.ObjectId(id) },
+        $match: { restaurant_id: id },
       },
       {
         $lookup: {
@@ -53,34 +51,14 @@ export const RestaurantDetail = async (req: Request) => {
                 isActive: { $eq: true },
               },
             },
-            {
-              $project: {
-                name: 1,
-                tags: 1,
-                serving: {
-                  title: 1,
-                  price: 1,
-                  currency: 1,
-                },
-              },
-            },
           ],
         },
       },
-      {
-        $project: {
-          grades: 0,
-          name: 1,
-          address: {
-            coord: 0,
-          },
-        },
-      },
-    ]);
+    ]).limit(1);
 
-    console.info("foundRestaurant===>", foundRestaurant);
+    console.info("foundRestaurant===>", foundRestaurant[0]);
 
-    return foundRestaurant;
+    return foundRestaurant[0];
   } catch (error) {
     errorLogger(error);
   }

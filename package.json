@@ -15,9 +15,10 @@
     "docker:clean": "docker compose build backend",
     "docker:logs": "docker compose logs -f backend",
     "check:gitconfig": "git config user.name && git config user.email",
-    "seed": "node seeders/restaurant.seeder.js",
-    "seed:docker": "docker compose exec backend npx tsx seeders/restaurant.seeder.js",
-    "docker:npm:i": "docker compose exec backend npm install"
+    "seed": "node seeders/index.js",
+    "seed:docker": "docker compose exec backend npx tsx seeders/index.js",
+    "docker:npm:i": "docker compose exec backend npm install",
+    "docker:restart": "docker compose up -d backend"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1041.0",

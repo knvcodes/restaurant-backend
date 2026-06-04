@@ -10,6 +10,6 @@ export const handleResponse = (res: Response, msg: string, data?: unknown) => {
   });
 };
 
-export const errorLogger = (arg: string) => {
+export const errorLogger = (arg: unknown) => {
   logger.error(withLocation(`${arg}====>`, arg));
 };

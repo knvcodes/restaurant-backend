@@ -35,7 +35,6 @@ export function withLocation(...args: any[]): string {
 
       if (typeof arg === "object") {
         try {
-          console.log("here===>", arg);
           return JSON.stringify(arg);
         } catch {
           return String(arg);

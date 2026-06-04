@@ -1,28 +1,60 @@
 import mongoose from "mongoose";
 import Restaurants from "../src/modules/restaurants/restaurant.model.ts";
 
-import dotenv from "dotenv";
-dotenv.config(); // loads .env file
-
 // ── Helpers ─────────────────────────────────────────────
 
 const restaurantNames = [
-  "Morris Park Bake Shop", "The Corner Bistro", "Spice Symphony",
-  "Blue Hill", "Le Bernardin", "Shake Shack", "Joe's Pizza",
-  "Katz's Delicatessen", "Peter Luger", "Di Fara Pizza",
-  "Xi'an Famous Foods", "Momofuku Noodle Bar", "The Halal Guys",
-  "Tacos El Bronco", "Roberta's", "Gramercy Tavern", "Eleven Madison Park",
-  "Sushi Nakazawa", "Mission Chinese", "The Smith",
+  "Morris Park Bake Shop",
+  "The Corner Bistro",
+  "Spice Symphony",
+  "Blue Hill",
+  "Le Bernardin",
+  "Shake Shack",
+  "Joe's Pizza",
+  "Katz's Delicatessen",
+  "Peter Luger",
+  "Di Fara Pizza",
+  "Xi'an Famous Foods",
+  "Momofuku Noodle Bar",
+  "The Halal Guys",
+  "Tacos El Bronco",
+  "Roberta's",
+  "Gramercy Tavern",
+  "Eleven Madison Park",
+  "Sushi Nakazawa",
+  "Mission Chinese",
+  "The Smith",
 ];
 
 const boroughs = ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"];
-const cuisines = ["American", "Chinese", "Italian", "Mexican", "Indian", "Japanese", "Pizza", "Bakery", "French", "Middle Eastern"];
+const cuisines = [
+  "American",
+  "Chinese",
+  "Italian",
+  "Mexican",
+  "Indian",
+  "Japanese",
+  "Pizza",
+  "Bakery",
+  "French",
+  "Middle Eastern",
+];
 
 const streets = [
-  "Flatbush Avenue", "Broadway", "Lexington Avenue", "Bedford Avenue",
-  "Queens Boulevard", "Grand Concourse", "Arthur Kill Road",
-  "2nd Avenue", "Bowery", "Houston Street", "Atlantic Avenue",
-  "Jamaica Avenue", "Morris Park Ave", "Northern Boulevard",
+  "Flatbush Avenue",
+  "Broadway",
+  "Lexington Avenue",
+  "Bedford Avenue",
+  "Queens Boulevard",
+  "Grand Concourse",
+  "Arthur Kill Road",
+  "2nd Avenue",
+  "Bowery",
+  "Houston Street",
+  "Atlantic Avenue",
+  "Jamaica Avenue",
+  "Morris Park Ave",
+  "Northern Boulevard",
 ];
 
 const restaurantDescriptions = [
@@ -78,7 +110,9 @@ function generateGrades() {
 
   for (let i = 0; i < count; i++) {
     grades.push({
-      date: new Date(Date.now() - getRandomInt(0, 365 * 2 * 24 * 60 * 60 * 1000)),
+      date: new Date(
+        Date.now() - getRandomInt(0, 365 * 2 * 24 * 60 * 60 * 1000),
+      ),
       grade: pickRandom(gradeLetters),
       score: getRandomInt(0, 30),
     });
@@ -122,17 +156,14 @@ export async function seedRestaurants(count = 20) {
     await Restaurants.deleteMany({});
     console.log("🗑️  Cleared existing restaurants");
 
-    const docs = [];
-
     for (let i = 0; i < count; i++) {
-      docs.push({
-        restaurant_id: `rest-${Date.now()}-${i}`,
-        name: pickRandom(restaurantNames),
+      await Restaurants.create({
+        name: restaurantNames[i],
         borough: pickRandom(boroughs),
         cuisine: pickRandom(cuisines),
         address: generateAddress(),
         grades: generateGrades(),
-        discription: pickRandom(restaurantDescriptions),
+        description: pickRandom(restaurantDescriptions),
         deliveryHours: buildDeliveryHours(),
         openDays: buildOpenDays(),
         deliveryFee: buildMoney(),
@@ -141,34 +172,9 @@ export async function seedRestaurants(count = 20) {
       });
     }
 
-    const result = await Restaurants.insertMany(docs);
-    console.log(`✅ Seeded ${result.length} restaurants`);
-
+    console.log(`✅ Seeded ${count} restaurants`);
   } catch (error) {
     console.error("❌ Seeder failed:", error);
     throw error;
   }
 }
-
-
-
-// ── CLI Runner ───────────────────────────────────────────
-
-const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/restaurant_db";
-
-console.log(MONGO_URI);
-
-
-mongoose
-  .connect(MONGO_URI)
-  .then(async () => {
-    console.log("🔌 Connected to MongoDB");
-    await seedRestaurants(50);
-    await mongoose.disconnect();
-    console.log("👋 Disconnected");
-    process.exit(0);
-  })
-  .catch((err) => {
-    console.error("Connection failed:", err);
-    process.exit(1);
-  });

@@ -1,5 +1,6 @@
 // src/models/restaurant.model.ts
 import mongoose, { Schema, Document, Model } from "mongoose";
+import { v4 as uuidv4 } from "uuid";
 
 // 1. TypeScript interfaces
 export interface IGrade {
@@ -92,7 +93,7 @@ const OpenDaysSchema: Schema<IOpenDays> = new Schema(
 
 const RestaurantSchema: Schema<IRestaurant> = new Schema(
   {
-    restaurant_id: { type: String, required: true, unique: true },
+    restaurant_id: { type: String, index: true, unique: true },
     name: { type: String, required: true },
     borough: { type: String, required: true },
     cuisine: { type: String, required: true },
@@ -128,19 +129,26 @@ const RestaurantSchema: Schema<IRestaurant> = new Schema(
   {
     timestamps: true,
     toJSON: {
-      transform(doc, ret) {
+      transform(doc, ret: Record<string, any>) {
         delete ret._id;
         delete ret.__v; // bonus garbage removal
       },
     },
     toObject: {
-      transform(doc, ret) {
+      transform(doc, ret: Record<string, any>) {
         delete ret._id;
         delete ret.__v;
       },
     },
   }, // adds createdAt and updatedAt
 );
+
+RestaurantSchema.pre("save", function (next) {
+  if (!this.restaurant_id) {
+    this.restaurant_id = uuidv4();
+  }
+  next();
+});
 
 // 3. Model
 const Restaurants: Model<IRestaurant> = mongoose.model<IRestaurant>(
