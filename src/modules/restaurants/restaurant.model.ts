@@ -1,8 +1,8 @@
 // src/models/restaurant.model.ts
-import mongoose, { Schema, Document, Model, Date } from "mongoose";
+import mongoose, { Schema, Document, Model } from "mongoose";
 
 // 1. TypeScript interfaces
-interface IGrade {
+export interface IGrade {
   date: Date;
   grade: string;
   score: number;

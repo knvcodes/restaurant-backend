@@ -78,6 +78,11 @@ export default {
 
     const restaurants = await db.collection("restaurants").find({}).toArray();
 
+    console.log(restaurants);
+
+
+
+
     const bulkOps = restaurants.map((doc) => ({
       updateOne: {
         filter: { _id: doc._id },
@@ -94,8 +99,18 @@ export default {
       },
     }));
 
+    console.log(bulkOps)
+
+    // ✅ GUARD: skip if nothing to do
+    if (bulkOps.length === 0) {
+
+      console.log('No restaurants need description field. Skipping.');
+      return;
+    }
+
+
     await db.collection("restaurants").bulkWrite(bulkOps);
   },
 
-  async down(db, client) {},
+  async down(db, client) { },
 };
