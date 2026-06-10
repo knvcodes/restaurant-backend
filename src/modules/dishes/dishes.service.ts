@@ -38,7 +38,53 @@ export const addDish = async (req: Request) => {
     });
 
     return newDish;
-  } catch (error) {
-    logger.error(withLocation("error:====>", error));
+  } catch (error: unknown) {
+    throw error;
+  }
+};
+
+export const dishesListing = async (req: Request) => {
+  try {
+    const { page = 1, limit = 10, search, restaurantId } = req.query;
+
+    const query: any = {};
+
+    // Filter by restaurantId
+    if (restaurantId) {
+      query.restaurantId = restaurantId;
+    }
+
+    // Search by name
+    if (search) {
+      query.name = { $regex: search, $options: "i" };
+    }
+
+    console.info("query:===>", query);
+
+    // Pagination
+    const pageNumber = parseInt(page as string, 10);
+    const limitNumber = parseInt(limit as string, 10);
+    const skip = (pageNumber - 1) * limitNumber;
+
+    const dishes = await Dishes.find(query)
+      .skip(skip)
+      .limit(limitNumber)
+      .sort({ createdAt: -1 });
+
+    console.info("dishes:===>", dishes);
+
+    const total = await Dishes.countDocuments(query);
+
+    return {
+      dishes,
+      pagination: {
+        total,
+        page: pageNumber,
+        limit: limitNumber,
+        totalPages: Math.ceil(total / limitNumber),
+      },
+    };
+  } catch (error: unknown) {
+    throw error;
   }
 };

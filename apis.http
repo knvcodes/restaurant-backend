@@ -20,16 +20,22 @@ Content-Type: {{contentType}}
 
 {
   "restaurantId": "69f983183f8419c4ab72305e",
-  "name": "Veg hakka Roll",
+  "name": "Chicken fry",
   "description": "Roles with fresh cabbage, carrots, and glass noodles. Served with sweet chili sauce.",
   "isActive": true,
   "tags": ["nonveg", "appetizer", "crispy", "asian"],
   "serving": [
     {
-      "title": "2 Pieces",
+      "title": "9 Pieces",
       "value": 2,
-      "price": 200,
+      "price": 210,
       "currency": "INR"
     }
   ]
 }
+
+### Dish listing api
+GET {{baseUrl}}/api/dishes/list?page=1&limit=10
+
+### Dish listing with search
+GET {{baseUrl}}/api/dishes/list?page=1&limit=10&search=chicken

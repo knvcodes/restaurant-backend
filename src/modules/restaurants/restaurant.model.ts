@@ -35,7 +35,7 @@ export interface IRestaurant extends Document {
   grades: IGrade[];
   createdAt?: Date;
   updatedAt?: Date;
-  discription?: string;
+  description?: string;
   deliveryHours: IDeliveryHours;
   openDays: IOpenDays;
 
@@ -99,7 +99,7 @@ const RestaurantSchema: Schema<IRestaurant> = new Schema(
     cuisine: { type: String, required: true },
     address: { type: AddressSchema, required: true },
     grades: { type: [GradeSchema], default: [] },
-    discription: { type: String, required: false },
+    description: { type: String, required: false },
     deliveryHours: { type: DeliveryHoursSchema, required: true },
     openDays: { type: OpenDaysSchema, required: true },
     deliveryFee: {

@@ -1,4 +1,3 @@
-import { NextFunction } from "express";
 import logger from "./logger";
 
 // errors.ts

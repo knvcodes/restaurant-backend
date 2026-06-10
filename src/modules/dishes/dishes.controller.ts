@@ -6,7 +6,8 @@ import { message } from "utils/messages";
 
 export const dishesListing = async (req: Request, res: Response) => {
   try {
-    // handleResponse(res, "List of dishes");
+    const dishes = await DishesService.dishesListing(req);
+    handleResponse(res, "Dishes listed successfully", dishes);
   } catch (error) {
     logger.error({
       message: "Error in dishesListing",
@@ -28,8 +29,10 @@ export const addDish = async (req: Request, res: Response) => {
     const addDish = await DishesService.addDish(req);
     handleResponse(res, message.success.addDish, addDish);
   } catch (error) {
+    console.info("123:===>", 123);
+
     logger.error({
-      message: "Error in addDish",
+      message: "Error in addDish controller",
       error: error instanceof Error ? error.message : error,
       stack: error instanceof Error ? error.stack : undefined,
       route: req.originalUrl,
