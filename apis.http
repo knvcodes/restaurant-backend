@@ -12,13 +12,13 @@ GET {{baseUrl}}
 GET {{baseUrl}}/api/restaurants/list
 
 ### Restaurant by id
-GET {{baseUrl}}/api/restaurants/6a2aa9bcef7eaaf4e8924af8
+GET {{baseUrl}}/api/restaurants/6a2ab2675e8f92e9f4bd31f4
 ### Dish add api
 POST {{baseUrl}}/api/dishes/add
 Content-Type: {{contentType}}
 
 {
-  "restaurantId": "6a2aa9bcef7eaaf4e8924af85",
+  "restaurantId": "6a2ab2675e8f92e9f4bd31f4",
   "name": "Chicken fry",
   "description": "Roles with fresh cabbage, carrots, and glass noodles. Served with sweet chili sauce.",
   "isActive": true,

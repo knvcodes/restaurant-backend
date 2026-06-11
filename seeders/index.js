@@ -2,6 +2,7 @@
 
 import dotenv from "dotenv";
 import { seedRestaurants } from "./restaurant.seeder.js";
+import { seedDishes } from "./dishes.seeder.js";
 import mongoose from "mongoose";
 dotenv.config(); // loads .env file
 
@@ -13,6 +14,7 @@ mongoose
   .then(async () => {
     console.log("🔌 Connected to MongoDB");
     await seedRestaurants(20);
+    await seedDishes(30);
     await mongoose.disconnect();
     console.log("👋 Disconnected");
     process.exit(0);
