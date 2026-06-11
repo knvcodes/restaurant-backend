@@ -1,11 +1,13 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import * as SupplementsService from "./supplements.service";
 import { handleResponse } from "utils/helpers";
 import logger from "utils/logger";
 
-
-
-export const supplementssListing = async (req: Request, res: Response) => {
+export const supplementssListing = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     // handleResponse(res, "List of supplements");
   } catch (error) {
@@ -17,9 +19,6 @@ export const supplementssListing = async (req: Request, res: Response) => {
       method: req.method,
       body: req.body,
     });
-    res.status(500).json({
-      message: "Internal Server Error",
-      error: (error as Error).message,
-    });
+    next(error);
   }
 };

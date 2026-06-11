@@ -74,14 +74,7 @@ function buildOpenDays() {
 
 export default {
   async up(db, client) {
-    // TODO write your migration here.
-
     const restaurants = await db.collection("restaurants").find({}).toArray();
-
-    console.log(restaurants);
-
-
-
 
     const bulkOps = restaurants.map((doc) => ({
       updateOne: {
@@ -99,18 +92,14 @@ export default {
       },
     }));
 
-    console.log(bulkOps)
-
     // ✅ GUARD: skip if nothing to do
     if (bulkOps.length === 0) {
-
-      console.log('No restaurants need description field. Skipping.');
+      console.log("No restaurants need description field. Skipping.");
       return;
     }
-
 
     await db.collection("restaurants").bulkWrite(bulkOps);
   },
 
-  async down(db, client) { },
+  async down(db, client) {},
 };

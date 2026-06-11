@@ -1,10 +1,14 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import logger from "utils/logger";
 import { listRestaurants, RestaurantDetail } from "./restaurant.service";
 import { handleResponse } from "utils/helpers";
 import { message } from "utils/messages";
 
-export const restaurantsListing = async (req: Request, res: Response) => {
+export const restaurantsListing = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const list = await listRestaurants(req);
     handleResponse(res, message.success.restaurant.fetch, list);
@@ -17,14 +21,15 @@ export const restaurantsListing = async (req: Request, res: Response) => {
       method: req.method,
       body: req.body,
     });
-    res.status(500).json({
-      message: "Internal Server Error",
-      error: (error as Error).message,
-    });
+    next(error);
   }
 };
 
-export const restaurantDetails = async (req: Request, res: Response) => {
+export const restaurantDetails = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const foundRestaurant = await RestaurantDetail(req);
     handleResponse(res, message.success.restaurant.detail, foundRestaurant);
@@ -37,9 +42,6 @@ export const restaurantDetails = async (req: Request, res: Response) => {
       method: req.method,
       body: req.body,
     });
-    res.status(500).json({
-      message: "Internal Server Error",
-      error: (error as Error).message,
-    });
+    next(error);
   }
 };

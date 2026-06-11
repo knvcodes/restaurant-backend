@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, Model, Types } from "mongoose";
+import mongoose, { Schema, Document, Model, Mongoose } from "mongoose";
 
 // Interface
 export interface IDishes extends Document {
@@ -11,22 +11,17 @@ export interface IDishes extends Document {
   updatedAt?: Date;
   supplements: String[];
   serving: Record<string, unknown>[];
-  restaurantId?: Types.ObjectId; // ✅ relation type
+  restaurantId?: Schema.Types.ObjectId;
 }
 
 // Schema
 const DishesSchema: Schema<IDishes> = new Schema(
   {
     name: { type: String, required: true },
-
     description: { type: String },
-
     isActive: { type: Boolean, default: true },
-
     tags: [{ type: String }],
-
     metadata: { type: Schema.Types.Mixed },
-
     supplements: [
       {
         type: Schema.Types.ObjectId,
@@ -34,7 +29,6 @@ const DishesSchema: Schema<IDishes> = new Schema(
         require: false,
       },
     ],
-
     // Example array of objects
     serving: [
       {
@@ -44,11 +38,11 @@ const DishesSchema: Schema<IDishes> = new Schema(
         currency: { type: String },
       },
     ],
-
-    // Example reference (relation)
     restaurantId: {
       type: Schema.Types.ObjectId,
       ref: "Restaurants",
+      required: true,
+      index: true,
     },
   },
   {

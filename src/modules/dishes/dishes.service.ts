@@ -1,5 +1,3 @@
-import logger from "utils/logger";
-import { withLocation } from "utils/loggerHelper";
 import { Request } from "express";
 import Restaurants from "modules/restaurants/restaurant.model";
 import { NotFoundError } from "utils/errors";
@@ -7,43 +5,35 @@ import { message } from "utils/messages";
 import Dishes from "./dishes.model";
 
 export const addDish = async (req: Request) => {
-  try {
-    console.info("123:===>", 123);
+  const {
+    restaurantId,
+    name,
+    description,
+    isActive = true,
+    tags,
+    serving,
+    supplements,
+  } = req.body;
 
-    const {
-      restaurantId,
-      name,
-      description,
-      isActive = true,
-      tags,
-      serving,
-      supplements,
-    } = req.body;
+  // throw error if no restaurant
+  const findRestaurant = await Restaurants.findById(restaurantId);
 
-    // throw error if no restaurant
-    const findRestaurant = await Restaurants.findById(restaurantId);
-
-    console.info("findRestaurant:===>", findRestaurant);
-
-    if (!findRestaurant) {
-      throw new NotFoundError(message.failed.restaurantNotFound);
-    }
-
-    // add new dish
-    const newDish = await Dishes.create({
-      restaurantId,
-      name,
-      description,
-      isActive,
-      tags,
-      serving,
-      supplements,
-    });
-
-    return newDish;
-  } catch (error: unknown) {
-    throw error;
+  if (!findRestaurant) {
+    throw new NotFoundError(message.failed.restaurantNotFound);
   }
+
+  // add new dish
+  const newDish = await Dishes.create({
+    restaurantId,
+    name,
+    description,
+    isActive,
+    tags,
+    serving,
+    supplements,
+  });
+
+  return newDish;
 };
 
 export const dishesListing = async (req: Request) => {
@@ -62,8 +52,6 @@ export const dishesListing = async (req: Request) => {
       query.name = { $regex: search, $options: "i" };
     }
 
-    console.info("query:===>", query);
-
     // Pagination
     const pageNumber = parseInt(page as string, 10);
     const limitNumber = parseInt(limit as string, 10);
@@ -73,8 +61,6 @@ export const dishesListing = async (req: Request) => {
       .skip(skip)
       .limit(limitNumber)
       .sort({ createdAt: -1 });
-
-    console.info("dishes:===>", dishes);
 
     const total = await Dishes.countDocuments(query);
 

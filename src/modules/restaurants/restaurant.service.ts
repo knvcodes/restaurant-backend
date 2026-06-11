@@ -1,6 +1,8 @@
 import Restaurant from "./restaurant.model";
 import { Request } from "express";
-import { FilterQuery } from "mongoose";
+import mongoose, { FilterQuery } from "mongoose";
+import { NotFoundError } from "utils/errors";
+import { message } from "utils/messages";
 
 export const listRestaurants = async (req: Request) => {
   const { search = null, limit = 10 } = <Record<string, string | number>>(
@@ -20,7 +22,6 @@ export const listRestaurants = async (req: Request) => {
     ...where,
   }).limit(Number(limit));
 
-  console.info("list:===>", list);
   return list;
 };
 
@@ -29,7 +30,7 @@ export const RestaurantDetail = async (req: Request) => {
 
   const foundRestaurant = await Restaurant.aggregate([
     {
-      $match: { restaurant_id: id },
+      $match: { _id: new mongoose.Types.ObjectId(id) },
     },
     {
       $lookup: {
@@ -37,18 +38,18 @@ export const RestaurantDetail = async (req: Request) => {
         as: "dishes",
         localField: "_id",
         foreignField: "restaurantId",
-        pipeline: [
-          {
-            $match: {
-              isActive: { $eq: true },
-            },
-          },
-        ],
+      },
+    },
+    {
+      $project: {
+        grades: 0,
       },
     },
   ]).limit(1);
 
-  console.info("foundRestaurant===>", foundRestaurant[0]);
+  if (!foundRestaurant[0]) {
+    throw new NotFoundError(message.failed.restaurantNotFound);
+  }
 
   return foundRestaurant[0];
 };

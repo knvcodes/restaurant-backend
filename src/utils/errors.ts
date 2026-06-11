@@ -60,7 +60,7 @@ export class InternalError extends HttpError {
 }
 
 export const globalErrorHandler = (err, _req, res, _next) => {
-  logger.error({ err }, "Unhandled error");
+  logger.error({ err }, "Unhandled error in globalErrorHandler");
 
   // Mongoose validation error
   if (err.name === "ValidationError") {

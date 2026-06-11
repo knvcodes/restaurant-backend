@@ -2,12 +2,13 @@
 
 ## Containers
 
-| Command                      | Description                                 |
-| ---------------------------- | ------------------------------------------- |
-| `docker ps`                  | List **running** containers                 |
-| `docker ps -a`               | List **all** containers (running + stopped) |
-| `docker inspect <container>` | Detailed info about a container             |
-| `docker logs <container>`    | View container logs                         |
+| Command                       | Description                                 |
+| ----------------------------- | ------------------------------------------- |
+| `docker ps`                   | List **running** containers                 |
+| `docker ps -a`                | List **all** containers (running + stopped) |
+| `docker inspect <container>`  | Detailed info about a container             |
+| `docker logs <container>`     | View container logs                         |
+| `docker stop $(docker ps -q)` | Stop all contaners                          |
 
 ---
 

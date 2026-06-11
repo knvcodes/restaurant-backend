@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Router, Request, Response, NextFunction } from "express";
 import {
   uploadSingle,
   uploadMultiple,
@@ -16,7 +16,7 @@ router.post(
   "/upload-image",
   uploadSingle,
   handleMulterError,
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       if (!req.file) {
         return res.status(400).json({ error: "No image provided" });
@@ -56,7 +56,7 @@ router.post(
   "/upload-multiple-images",
   uploadMultiple,
   handleMulterError,
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       if (!req.files || !Array.isArray(req.files)) {
         return res.status(400).json({ error: "No images provided" });
@@ -85,15 +85,18 @@ router.post(
 // DELETE
 // ============================================
 
-router.delete("/*key", async (req: Request, res: Response) => {
-  try {
-    const imageService = req.app.locals.imageService as ImageService;
-    const key = (req.params.key as unknown as string[]).join("/");
-    await imageService.deleteImage(key);
-    res.json({ success: true, deleted: key });
-  } catch (err: any) {
-    res.status(500).json({ error: err.message });
-  }
-});
+router.delete(
+  "/*key",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const imageService = req.app.locals.imageService as ImageService;
+      const key = (req.params.key as unknown as string[]).join("/");
+      await imageService.deleteImage(key);
+      res.json({ success: true, deleted: key });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  },
+);
 
 export default router;

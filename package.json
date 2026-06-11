@@ -11,6 +11,7 @@
     "db:sync": "npx migrate-mongo down && npx migrate-mongo up",
     "db:sync:docker": "docker compose exec backend npx migrate-mongo down && docker compose exec backend npx migrate-mongo up",
     "generate": "ts-node scripts/generate.ts",
+    "cleardb": "ts-node scripts/clearDb.ts",
     "docker:dev": "docker compose down && docker compose up --watch --build",
     "docker:clean": "docker compose build backend",
     "docker:logs": "docker compose logs -f backend",
