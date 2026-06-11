@@ -25,16 +25,16 @@ npm run docker:restart
 
 ### Running locally no docker
 
-change env
-start mongo service if not
-start minio service
-docker compose down
-npm run dev
+- change env
+- start mongo service if not
+- start minio service
+- docker compose down
+- npm run dev
 
 ### mongo service
 
-sudo systemctl start mongod
-sudo systemctl stop mongod
+- sudo systemctl start mongod
+- sudo systemctl stop mongod
 
 ### minio service
 
