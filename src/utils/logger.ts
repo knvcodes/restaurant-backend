@@ -24,6 +24,8 @@ const options: LoggerOptions = {
   base: { pid: false },
 };
 
+console.info("options:===>", options);
+
 // Pretty console logger (your existing feature)
 const consoleLogger: Logger = pino(options);
 

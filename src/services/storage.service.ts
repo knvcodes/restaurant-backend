@@ -6,7 +6,6 @@ import {
   ListObjectsV2Command,
   HeadBucketCommand,
   CreateBucketCommand,
-  CopyObjectCommand,
   DeleteObjectsCommand,
   _Object,
   DeleteObjectsOutput,
@@ -21,10 +20,12 @@ import { UploadOptions, UploadResult } from "../utils/types";
 export class StorageService {
   private client: S3Client;
   private bucket: string;
+  private publicEndpoint: string;
 
   constructor(s3Client: S3Client, bucketName: string) {
     this.client = s3Client;
     this.bucket = bucketName;
+    this.publicEndpoint = process.env.MINIO_ENDPOINT || "http://localhost:9000";
   }
 
   // ============================================
@@ -37,8 +38,16 @@ export class StorageService {
         await this.client.send(new HeadBucketCommand({ Bucket: this.bucket }));
         console.log(`✓ Bucket '${this.bucket}' exists`);
         return;
-      } catch (err: any) {
-        if (err.name === "NotFound" || err.$metadata?.httpStatusCode === 404) {
+      } catch (err: unknown) {
+        const error = err as {
+          name?: string;
+          $metadata?: { httpStatusCode?: number };
+        };
+
+        if (
+          error.name === "NotFound" ||
+          error.$metadata?.httpStatusCode === 404
+        ) {
           await this.client.send(
             new CreateBucketCommand({ Bucket: this.bucket }),
           );
@@ -120,8 +129,10 @@ export class StorageService {
 
     upload.on(
       "httpUploadProgress",
-      (progress: { loaded: number; total: number }) => {
-        const percent = ((progress.loaded / progress.total) * 100).toFixed(2);
+      (progress) => {
+        const loaded = progress.loaded || 0;
+        const total = progress.total || 0;
+        const percent = total > 0 ? ((loaded / total) * 100).toFixed(2) : "0";
         console.log(`Upload progress: ${percent}%`);
       },
     );
@@ -146,10 +157,11 @@ export class StorageService {
     });
 
     const response = await this.client.send(command);
-    const chunks: Buffer[] = [];
+    const body = this.getReadableBody(response.Body);
+    const chunks: Uint8Array[] = [];
 
-    for await (const chunk of response.Body as Readable) {
-      chunks.push(chunk);
+    for await (const chunk of body) {
+      chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
     }
 
     return Buffer.concat(chunks);
@@ -181,7 +193,7 @@ export class StorageService {
       res.setHeader("Content-Length", response.ContentLength);
     }
 
-    (response.Body as Readable).pipe(res);
+    this.getReadableBody(response.Body).pipe(res);
   }
 
   // ============================================
@@ -193,15 +205,15 @@ export class StorageService {
     expiresIn: number = 3600,
     operation: "get" | "put" = "get",
   ): Promise<string> {
-    const CommandClass =
-      operation === "put" ? PutObjectCommand : GetObjectCommand;
-    const command = new CommandClass({ Bucket: this.bucket, Key: key });
+    const command =
+      operation === "put"
+        ? new PutObjectCommand({ Bucket: this.bucket, Key: key })
+        : new GetObjectCommand({ Bucket: this.bucket, Key: key });
     return await getSignedUrl(this.client, command, { expiresIn });
   }
 
   getPublicUrl(key: string): string {
-    const endpoint = (this.client.config as any).endpoint;
-    return `${endpoint}/${this.bucket}/${key}`;
+    return `${this.publicEndpoint}/${this.bucket}/${key}`;
   }
 
   // ============================================
@@ -241,6 +253,14 @@ export class StorageService {
       deleted: response.Deleted?.map((d) => d.Key!).filter(Boolean) || [],
       errors: response.Errors?.map((e) => e.Key!).filter(Boolean) || [],
     };
+  }
+
+  private getReadableBody(body: unknown): Readable {
+    if (body instanceof Readable) {
+      return body;
+    }
+
+    throw new Error("S3 response body is not a readable stream");
   }
 }
 

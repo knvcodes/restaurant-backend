@@ -1,6 +1,11 @@
 export const message = {
   success: {
     addDish: "Dish added successfully",
+    restaurant: {
+      fetch: "Restaurants list fetched successfully",
+      add: "Restaurant added successfully",
+      detail: "Restaurant details fetched successfully",
+    },
   },
   failed: {
     restaurantNotFound: "Restaurant not found for given id",

@@ -6,9 +6,9 @@
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "moduleResolution": "node",
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "paths": {
-      "*": ["src/*"]
+      "*": ["*"]
     },
     "target": "ES2020",
     "module": "ESNext",

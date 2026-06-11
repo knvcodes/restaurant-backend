@@ -2,12 +2,12 @@ import { Request, Response } from "express";
 import logger from "utils/logger";
 import { listRestaurants, RestaurantDetail } from "./restaurant.service";
 import { handleResponse } from "utils/helpers";
+import { message } from "utils/messages";
 
 export const restaurantsListing = async (req: Request, res: Response) => {
   try {
-    // Your main logic here
     const list = await listRestaurants(req);
-    handleResponse(res, "List of restaurants", list);
+    handleResponse(res, message.success.restaurant.fetch, list);
   } catch (error) {
     logger.error({
       message: "Error in restaurantsListing",
@@ -26,9 +26,8 @@ export const restaurantsListing = async (req: Request, res: Response) => {
 
 export const restaurantDetails = async (req: Request, res: Response) => {
   try {
-    // Your main logic here
     const foundRestaurant = await RestaurantDetail(req);
-    handleResponse(res, "Restaurant details", foundRestaurant);
+    handleResponse(res, message.success.restaurant.detail, foundRestaurant);
   } catch (error) {
     logger.error({
       message: "Error in restaurantDetails",

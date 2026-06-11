@@ -41,25 +41,22 @@ const modelPath = path.join(modulePath, `${name}.model.ts`);
 
 const validateTemplate = `
 import { z } from "zod";
-import mongoose from "mongoose";
 
-const objectId = z.string().refine(
-  (val) => mongoose.Types.ObjectId.isValid(val),
-  { message: "Invalid ObjectId" }
-);
-
-// Combined schema for routes that need body + params + query
-export const getDishesByRestaurantSchema = z.object({
-  body: z.object({}), // empty if no body expected
-  
-  params: z.object({
-    restaurantId: objectId,
-  }),
-  
+// Validation schema for listing ${name}s
+export const ${name}ListingSchema = z.object({
   query: z.object({
-    page: z.coerce.number().positive().default(1),
-    limit: z.coerce.number().positive().max(100).default(10),
-    sort: z.enum(["name", "price", "createdAt"]).optional(),
+    search: z.string().optional(),
+    limit: z
+      .string()
+      .regex(/^[0-9]+$/, "Limit must be a valid number")
+      .optional(),
+  }),
+});
+
+// Validation schema for ${name} details
+export const ${name}DetailsSchema = z.object({
+  params: z.object({
+    id: z.string().min(1, "${name} id is required"),
   }),
 });
 `;

@@ -5,7 +5,7 @@
   "main": "dist/server.js",
   "license": "MIT",
   "scripts": {
-    "dev": "NODE_OPTIONS=--enable-source-maps tsx watch src/server.ts",
+    "dev": "docker compose down && NODE_OPTIONS=--enable-source-maps tsx watch src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
     "db:sync": "npx migrate-mongo down && npx migrate-mongo up",

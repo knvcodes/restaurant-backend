@@ -1,4 +1,4 @@
-import express, { NextFunction, Request, Response } from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
 import { connectDB } from "./config/db.ts";
 import logger from "./utils/logger.ts";

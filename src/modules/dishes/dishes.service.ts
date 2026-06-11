@@ -8,6 +8,8 @@ import Dishes from "./dishes.model";
 
 export const addDish = async (req: Request) => {
   try {
+    console.info("123:===>", 123);
+
     const {
       restaurantId,
       name,
@@ -21,12 +23,13 @@ export const addDish = async (req: Request) => {
     // throw error if no restaurant
     const findRestaurant = await Restaurants.findById(restaurantId);
 
+    console.info("findRestaurant:===>", findRestaurant);
+
     if (!findRestaurant) {
       throw new NotFoundError(message.failed.restaurantNotFound);
     }
 
     // add new dish
-
     const newDish = await Dishes.create({
       restaurantId,
       name,

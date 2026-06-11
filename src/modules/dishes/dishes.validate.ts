@@ -31,9 +31,7 @@ export const addDishSchema = z.object({
         message.validation.addDish.serving.invalid,
       )
       .optional(),
-    restaurantId: z
-      .string(message.validation.addDish.restaurantId.invalid)
-      .optional(),
+    restaurantId: z.string(message.validation.addDish.restaurantId.invalid),
   }),
 });
 

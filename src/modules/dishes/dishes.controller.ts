@@ -26,11 +26,10 @@ export const dishesListing = async (req: Request, res: Response) => {
 
 export const addDish = async (req: Request, res: Response) => {
   try {
-    const addDish = await DishesService.addDish(req);
-    handleResponse(res, message.success.addDish, addDish);
+    console.log("123:===>", 123);
+    // const addDish = await DishesService.addDish(req);
+    handleResponse(res, message.success.addDish);
   } catch (error) {
-    console.info("123:===>", 123);
-
     logger.error({
       message: "Error in addDish controller",
       error: error instanceof Error ? error.message : error,
