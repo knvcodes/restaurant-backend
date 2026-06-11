@@ -1,0 +1,249 @@
+openapi: 3.0.3
+info:
+  title: Restaurants API
+  description: Endpoints for listing restaurants and fetching restaurant details (with related dishes).
+  version: 1.0.0
+
+tags:
+  - name: Restaurants
+    description: Restaurant listing and detail operations
+
+servers:
+  - url: http://localhost:3000/api
+    description: Local dev server
+
+paths:
+  /restaurants/list:
+    get:
+      tags:
+        - Restaurants
+      summary: List restaurants
+      description: Returns a list of restaurants. Supports a free-text `search` and a `limit` cap.
+      operationId: listRestaurants
+      parameters:
+        - in: query
+          name: search
+          required: false
+          schema:
+            type: string
+          description: Case-insensitive search across `name` and `description`.
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 1
+          description: Max number of restaurants to return.
+      responses:
+        "200":
+          description: Restaurants fetched successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Restaurants fetched successfully
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Restaurant"
+        "500":
+          $ref: "#/components/schemas/ErrorResponse"
+
+  /restaurants/{id}:
+    get:
+      tags:
+        - Restaurants
+      summary: Get restaurant details
+      description: |
+        Fetches a single restaurant by its MongoDB `_id`.
+        Uses an aggregation pipeline that `$lookup`'s the related `dishes`
+        and strips the `grades` field from the response.
+      operationId: getRestaurantById
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Restaurant MongoDB ObjectId.
+      responses:
+        "200":
+          description: Restaurant detail fetched successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Restaurant detail fetched successfully
+                  data:
+                    $ref: "#/components/schemas/RestaurantWithDishes"
+        "404":
+          description: Restaurant not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    Address:
+      type: object
+      properties:
+        building:
+          type: string
+          example: "1234"
+        coord:
+          type: array
+          description: "[longitude, latitude]"
+          items:
+            type: number
+          minItems: 2
+          maxItems: 2
+          example: [-73.95, 40.78]
+        street:
+          type: string
+          example: Broadway
+        zipcode:
+          type: string
+          example: "10001"
+
+    DeliveryHours:
+      type: object
+      properties:
+        from:
+          type: string
+          format: date-time
+          example: "2024-01-01T09:00:00.000Z"
+        to:
+          type: string
+          format: date-time
+          example: "2024-01-01T22:00:00.000Z"
+
+    OpenDays:
+      type: object
+      properties:
+        from:
+          type: string
+          example: Mon
+        to:
+          type: string
+          example: Sun
+
+    Money:
+      type: object
+      properties:
+        amount:
+          type: number
+          example: 50
+        currency:
+          type: string
+          enum: [INR, USD, EUR]
+          example: USD
+
+    Restaurant:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 65f0c1a2b3c4d5e6f7a8b9c0
+        restaurant_id:
+          type: string
+          example: 9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d
+        name:
+          type: string
+          example: Morris Park Bake Shop
+        borough:
+          type: string
+          enum: [Manhattan, Brooklyn, Queens, Bronx, "Staten Island"]
+        cuisine:
+          type: string
+          example: Italian
+        address:
+          $ref: "#/components/schemas/Address"
+        description:
+          type: string
+        deliveryHours:
+          $ref: "#/components/schemas/DeliveryHours"
+        openDays:
+          $ref: "#/components/schemas/OpenDays"
+        deliveryFee:
+          $ref: "#/components/schemas/Money"
+        cancellationFee:
+          $ref: "#/components/schemas/Money"
+        minimumDelivery:
+          $ref: "#/components/schemas/Money"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    RestaurantWithDishes:
+      allOf:
+        - $ref: "#/components/schemas/Restaurant"
+        - type: object
+          properties:
+            dishes:
+              type: array
+              items:
+                $ref: "#/components/schemas/Dish"
+
+    Dish:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        isActive:
+          type: boolean
+        tags:
+          type: array
+          items:
+            type: string
+        serving:
+          type: array
+          items:
+            $ref: "#/components/schemas/Serving"
+        supplements:
+          type: array
+          items:
+            type: string
+        restaurantId:
+          type: string
+
+    Serving:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Medium
+        value:
+          type: number
+          example: 2
+        price:
+          type: number
+          example: 12.5
+        currency:
+          type: string
+          enum: [INR, USD, EUR]
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Something went wrong
+        error:
+          type: string

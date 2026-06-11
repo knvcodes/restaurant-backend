@@ -1,0 +1,86 @@
+openapi: 3.0.3
+info:
+  title: Supplements API
+  description: Endpoints for managing supplements (add-ons like extras, sauces, sides).
+  version: 1.0.0
+
+tags:
+  - name: Supplements
+    description: Supplement listing operations
+
+servers:
+  - url: http://localhost:3000/api
+    description: Local dev server
+
+paths:
+  /supplements/list:
+    get:
+      tags:
+        - Supplements
+      summary: List supplements
+      description: |
+        Returns the list of supplements.
+        **Note:** This endpoint is currently a stub in the controller —
+        the service implementation is pending. Use it once the service is wired up.
+      operationId: listSupplements
+      parameters: []
+      responses:
+        "200":
+          description: Supplements listed successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Supplements listed successfully
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Supplement"
+        "500":
+          $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    Supplement:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Extra Cheese
+        description:
+          type: string
+          example: Add a generous layer of mozzarella on top.
+        price:
+          type: number
+          example: 1.5
+        isActive:
+          type: boolean
+          example: true
+        tags:
+          type: array
+          items:
+            type: string
+          example: [dairy, vegetarian]
+        metadata:
+          type: object
+          additionalProperties: true
+        restaurantId:
+          type: string
+          description: MongoDB ObjectId of the parent restaurant.
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        error:
+          type: string

@@ -8,6 +8,8 @@ import StorageService from "services/storage.service.ts";
 import ImageService from "services/image.service.ts";
 import { BUCKET_NAME, s3Client } from "config/s3.ts";
 import { globalErrorHandler } from "utils/errors.ts";
+import swaggerUi from "swagger-ui-express";
+import { buildSwaggerSpec } from "docs/swagger.config.ts";
 
 // integrate env
 dotenv.config();
@@ -52,6 +54,19 @@ app.use(express.json());
     app.get("/", (req: Request, res: Response) => {
       res.send("Hello from Express + Docker!");
     });
+
+    // Build OpenAPI spec once at startup and mount Swagger UI
+    const swaggerSpec = buildSwaggerSpec();
+    app.use(
+      "/api/docs",
+      swaggerUi.serve,
+      swaggerUi.setup(swaggerSpec, {
+        customSiteTitle: "Restaurant API Docs",
+      }),
+    );
+    logger.info(
+      `📚 Swagger UI live at http://localhost:${PORT}/api/docs`,
+    );
 
     app.use("/api", router);
 

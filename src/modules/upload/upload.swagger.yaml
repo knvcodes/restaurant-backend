@@ -1,0 +1,206 @@
+openapi: 3.0.3
+info:
+  title: Upload API
+  description: Image upload, multi-upload, and deletion endpoints (S3/MinIO backed).
+  version: 1.0.0
+
+tags:
+  - name: Upload
+    description: File upload and management
+
+servers:
+  - url: http://localhost:3000/api
+    description: Local dev server
+
+paths:
+  /upload/upload-image:
+    post:
+      tags:
+        - Upload
+      summary: Upload a single image
+      description: |
+        Uploads a single image file via `multipart/form-data`.
+        Optional `folder`, resize options, `quality`, and a `thumbnail` flag
+        (set to `"true"` as a string) can be sent alongside the file.
+      operationId: uploadSingleImage
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: The image file to upload.
+                folder:
+                  type: string
+                  default: uploads
+                  description: Target folder/key prefix in the bucket.
+                width:
+                  type: integer
+                  description: Optional resize width in px.
+                height:
+                  type: integer
+                  description: Optional resize height in px.
+                fit:
+                  type: string
+                  enum: [cover, contain, fill, inside, outside]
+                  default: cover
+                quality:
+                  type: integer
+                  default: 80
+                  minimum: 1
+                  maximum: 100
+                thumbnail:
+                  type: string
+                  enum: ["true", "false"]
+                  default: "false"
+                  description: Set to `"true"` to also generate a thumbnail.
+      responses:
+        "200":
+          description: Image uploaded successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: "#/components/schemas/UploadResult"
+        "400":
+          description: No image provided in the request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          $ref: "#/components/schemas/ErrorResponse"
+
+  /upload/upload-multiple-images:
+    post:
+      tags:
+        - Upload
+      summary: Upload multiple images
+      description: |
+        Uploads multiple image files via `multipart/form-data`
+        using the `files` field name.
+      operationId: uploadMultipleImages
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [files]
+              properties:
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                folder:
+                  type: string
+                  default: uploads
+                quality:
+                  type: integer
+                  default: 80
+                thumbnail:
+                  type: string
+                  enum: ["true", "false"]
+                  default: "false"
+      responses:
+        "200":
+          description: Images uploaded successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  count:
+                    type: integer
+                    example: 3
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/UploadResult"
+        "400":
+          description: No images provided in the request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          $ref: "#/components/schemas/ErrorResponse"
+
+  /upload/{key}:
+    delete:
+      tags:
+        - Upload
+      summary: Delete an image by key
+      description: |
+        Deletes an image from the bucket. The full object key can be passed
+        as a path parameter (e.g. `uploads/2024/01/foo.jpg`) — slashes are
+        preserved by the router.
+      operationId: deleteImage
+      parameters:
+        - in: path
+          name: key
+          required: true
+          schema:
+            type: string
+          description: The full object key in the bucket.
+          example: uploads/2024/01/foo.jpg
+      responses:
+        "200":
+          description: Image deleted successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  deleted:
+                    type: string
+                    example: uploads/2024/01/foo.jpg
+        "500":
+          $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    UploadResult:
+      type: object
+      properties:
+        key:
+          type: string
+          example: uploads/2024/01/abc123.jpg
+        url:
+          type: string
+          example: https://bucket.s3.amazonaws.com/uploads/2024/01/abc123.jpg
+        thumbnailKey:
+          type: string
+          example: uploads/2024/01/abc123_thumb.jpg
+        thumbnailUrl:
+          type: string
+        size:
+          type: integer
+          example: 102400
+        mimeType:
+          type: string
+          example: image/jpeg
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          example: No image provided

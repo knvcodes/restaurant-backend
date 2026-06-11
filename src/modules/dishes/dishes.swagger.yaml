@@ -1,0 +1,274 @@
+openapi: 3.0.3
+info:
+  title: Dishes API
+  description: Endpoints for listing dishes (with pagination/filter) and adding a new dish.
+  version: 1.0.0
+
+tags:
+  - name: Dishes
+    description: Dish listing and creation operations
+
+servers:
+  - url: http://localhost:3000/api
+    description: Local dev server
+
+paths:
+  /dishes/list:
+    get:
+      tags:
+        - Dishes
+      summary: List dishes
+      description: |
+        Returns a paginated list of dishes, sorted by `createdAt` (newest first).
+        Supports search by name and filtering by `restaurantId`.
+      operationId: listDishes
+      parameters:
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+            default: 1
+            minimum: 1
+          description: Page number (1-indexed).
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 1
+          description: Number of dishes per page.
+        - in: query
+          name: search
+          required: false
+          schema:
+            type: string
+          description: Case-insensitive search on `name`.
+        - in: query
+          name: restaurantId
+          required: false
+          schema:
+            type: string
+          description: MongoDB ObjectId of the restaurant to filter by.
+      responses:
+        "200":
+          description: Dishes listed successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Dishes listed successfully
+                  data:
+                    type: object
+                    properties:
+                      dishes:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Dish"
+                      pagination:
+                        $ref: "#/components/schemas/Pagination"
+        "500":
+          $ref: "#/components/schemas/ErrorResponse"
+
+  /dishes/add:
+    post:
+      tags:
+        - Dishes
+      summary: Add a new dish
+      description: |
+        Creates a new dish linked to an existing restaurant.
+        Returns `404` if `restaurantId` does not exist.
+      operationId: addDish
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddDishRequest"
+            example:
+              name: Margherita Pizza
+              description: Classic pizza with fresh basil and mozzarella.
+              isActive: true
+              tags: [vegetarian, bestseller]
+              metadata:
+                calories: 800
+                prepTimeMinutes: 20
+                spicyLevel: 1
+              supplements: []
+              serving:
+                - title: Small
+                  value: 1
+                  price: 8.99
+                  currency: USD
+                - title: Medium
+                  value: 2
+                  price: 12.99
+                  currency: USD
+                - title: Large
+                  value: 3
+                  price: 16.99
+                  currency: USD
+              restaurantId: 65f0c1a2b3c4d5e6f7a8b9c0
+      responses:
+        "201":
+          description: Dish created successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Dish added successfully
+                  data:
+                    $ref: "#/components/schemas/Dish"
+        "404":
+          description: Restaurant not found for given `restaurantId`.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "422":
+          description: Validation error (Zod schema failed).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+
+components:
+  schemas:
+    Serving:
+      type: object
+      required: [title, value, price, currency]
+      properties:
+        title:
+          type: string
+          example: Medium
+        value:
+          type: number
+          example: 2
+        price:
+          type: number
+          example: 12.99
+        currency:
+          type: string
+          enum: [INR, USD, EUR]
+          example: USD
+
+    AddDishRequest:
+      type: object
+      required: [name, restaurantId]
+      properties:
+        name:
+          type: string
+          minLength: 1
+          example: Margherita Pizza
+        description:
+          type: string
+          example: Classic pizza with fresh basil and mozzarella.
+        isActive:
+          type: boolean
+          default: true
+        tags:
+          type: array
+          items:
+            type: string
+          example: [vegetarian, bestseller]
+        metadata:
+          type: object
+          additionalProperties: true
+          example:
+            calories: 800
+            prepTimeMinutes: 20
+        supplements:
+          type: array
+          items:
+            type: string
+            description: Array of supplement MongoDB ObjectIds.
+        serving:
+          type: array
+          items:
+            $ref: "#/components/schemas/Serving"
+        restaurantId:
+          type: string
+          description: MongoDB ObjectId of the parent restaurant.
+          example: 65f0c1a2b3c4d5e6f7a8b9c0
+
+    Dish:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        isActive:
+          type: boolean
+        tags:
+          type: array
+          items:
+            type: string
+        metadata:
+          type: object
+          additionalProperties: true
+        supplements:
+          type: array
+          items:
+            type: string
+        serving:
+          type: array
+          items:
+            $ref: "#/components/schemas/Serving"
+        restaurantId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Pagination:
+      type: object
+      properties:
+        total:
+          type: integer
+          example: 42
+        page:
+          type: integer
+          example: 1
+        limit:
+          type: integer
+          example: 10
+        totalPages:
+          type: integer
+          example: 5
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        error:
+          type: string
+
+    ValidationError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Validation failed
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              path:
+                type: string
+              message:
+                type: string
