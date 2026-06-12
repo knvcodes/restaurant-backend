@@ -7,9 +7,33 @@
 GET {{baseUrl}}
 
 
+# OWNER
+
+### register 
+POST {{baseUrl}}/api/owner/register
+Content-Type: {{contentType}}
+
+{
+  "name": "james",
+  "email": "test@yopmail.com",
+  "password": "Test@123"
+}
+
+
+### login
+POST {{baseUrl}}/api/owner/login
+Content-Type: {{contentType}}
+
+{
+  "email": "test@yopmail.com",
+  "password": "Test@123"
+}
+
+
 
 ### Restaurant listing api
 GET {{baseUrl}}/api/restaurants/list
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiamFtZXMiLCJyb2xlIjpbIm93bmVyIl0sImlhdCI6MTc4MTI2NjU5MCwiZXhwIjoxNzgxMjY3MTkwfQ.9UYRXC29QcbzE4rf1XHpEfsVdtzcVEsaMDbazA2ws2A
 
 ### Restaurant by id
 GET {{baseUrl}}/api/restaurants/6a2ab2675e8f92e9f4bd31f4
