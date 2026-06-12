@@ -667,6 +667,33 @@
   resolved "https://registry.npmjs.org/@nodable/entities/-/entities-2.1.0.tgz"
   integrity sha512-nyT7T3nbMyBI/lvr6L5TyWbFJAI9FTgVRakNoBqCD+PmID8DzFrrNdLLtHMwMszOtqZa8PAOV24ZqDnQrhQINA==
 
+"@redis/bloom@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.npmjs.org/@redis/bloom/-/bloom-6.0.0.tgz"
+  integrity sha512-P0n5NkV9IIdT6nYXOfMHG83sho8pE7Nay7yw27wOGVLv4DthgvzebpGz6m7VuMTizeJmw3LPw2Xek5wFUhGpVw==
+
+"@redis/client@^6.0.0", "@redis/client@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.npmjs.org/@redis/client/-/client-6.0.0.tgz"
+  integrity sha512-NS4iIT25r24sAjNQ2nSRdCW5jPJoV0rxkBee27oTeR+RXaOu89cjIsrww5rPBaYVGVdL1QCx9uz9141gZiSKdQ==
+  dependencies:
+    cluster-key-slot "1.1.2"
+
+"@redis/json@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.npmjs.org/@redis/json/-/json-6.0.0.tgz"
+  integrity sha512-F+eqFfgPcy57Zs1KW7UtLnBtRk6lxAUIoe7dyZerpm6e+ssYXG/dWJrbrHFYs0b7tt6QBtYpVuukBuM9XqhUAg==
+
+"@redis/search@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.npmjs.org/@redis/search/-/search-6.0.0.tgz"
+  integrity sha512-VHuCJ2W0YWFixGZh/l//8JiyOsD4gN+NhjdRAGIoUe0UQ4mtq1NyY2ZJ973XT+vYhaU21XdK8r8oNrd5n7wbzQ==
+
+"@redis/time-series@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.npmjs.org/@redis/time-series/-/time-series-6.0.0.tgz"
+  integrity sha512-QWhkYsg+3lhBrBf+cbzybtV8LQcSrk7iXIgTaGU+pHNFTkql7TpVRE24ROS6M2ybVIV6O/zxTqfxgxxYiqyw0Q==
+
 "@scarf/scarf@=1.4.0":
   version "1.4.0"
   resolved "https://registry.npmjs.org/@scarf/scarf/-/scarf-1.4.0.tgz"
@@ -1525,6 +1552,11 @@ cli-table3@^0.6.5:
     string-width "^4.2.0"
   optionalDependencies:
     "@colors/colors" "1.5.0"
+
+cluster-key-slot@1.1.2:
+  version "1.1.2"
+  resolved "https://registry.npmjs.org/cluster-key-slot/-/cluster-key-slot-1.1.2.tgz"
+  integrity sha512-RMr0FhtfXemyinomL4hrWcYJxmX6deFdCxpJzhDttxgO1+bcCnkk+9drydLVDmAMG7NE6aN/fl4F7ucU/90gAA==
 
 colorette@^2.0.7:
   version "2.0.20"
@@ -2391,6 +2423,17 @@ real-require@^0.2.0:
   version "0.2.0"
   resolved "https://registry.npmjs.org/real-require/-/real-require-0.2.0.tgz"
   integrity sha512-57frrGM/OCTLqLOAh0mhVA9VBMHd+9U7Zb2THMGdBUoZVOtGbJzjxsYGDJ3A9AYYCP4hn6y1TVbaOfzWtm5GFg==
+
+redis@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.npmjs.org/redis/-/redis-6.0.0.tgz"
+  integrity sha512-n9Thfc39OXleEoPT2k5gwKsqY+HfCww3YS71ofcr9KKbkn89bpjU9dToIlD+JRdM3/GYQkwMtVgTxLyed+LptQ==
+  dependencies:
+    "@redis/bloom" "6.0.0"
+    "@redis/client" "6.0.0"
+    "@redis/json" "6.0.0"
+    "@redis/search" "6.0.0"
+    "@redis/time-series" "6.0.0"
 
 resolve@^1.0.0:
   version "1.22.10"

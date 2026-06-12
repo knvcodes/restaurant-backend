@@ -45,6 +45,11 @@ docker run -p 9000:9000 -p 9001:9001 \
  -e "MINIO_ROOT_PASSWORD=password123" \
  quay.io/minio/minio server /data --console-address ":9001"
 
+### redis docker service
+
+- docker run -p 5540:5540 redis/redisinsight:latest
+- Then access at http://localhost:5540.
+
 ### clear all collections
 
 - npm run cleardb
