@@ -7,18 +7,18 @@
 GET {{baseUrl}}
 
 
-# OWNER
+# AUTH
 
-### register 
-POST {{baseUrl}}/api/owner/register
+### register owner
+POST {{baseUrl}}/api/auth/register
 Content-Type: {{contentType}}
 
 {
   "name": "james",
   "email": "test@yopmail.com",
-  "password": "Test@123"
+  "password": "Test@123",
+  "role": "owner"
 }
-
 
 ### login
 POST {{baseUrl}}/api/owner/login
@@ -29,14 +29,18 @@ Content-Type: {{contentType}}
   "password": "Test@123"
 }
 
-
+# RESTAURANT
 
 ### Restaurant listing api
 GET {{baseUrl}}/api/restaurants/list
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiamFtZXMiLCJyb2xlIjpbIm93bmVyIl0sImlhdCI6MTc4MTI2NjU5MCwiZXhwIjoxNzgxMjY3MTkwfQ.9UYRXC29QcbzE4rf1XHpEfsVdtzcVEsaMDbazA2ws2A
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiamFtZXMiLCJyb2xlIjpbIm93bmVyIl0sImlhdCI6MTc4MTU5Nzk5MywiZXhwIjoxNzgxNTk4NTkzfQ.h09nb0FuIS9GwtCMMMA0e3q6uVNH-8hzAh4ucAtmTsk
 
 ### Restaurant by id
 GET {{baseUrl}}/api/restaurants/6a2ab2675e8f92e9f4bd31f4
+
+
+
+# DISHES
 
 
 ### Dish add api

@@ -6,16 +6,18 @@ export const message = {
       add: "Restaurant added successfully",
       detail: "Restaurant details fetched successfully",
     },
-    owner: {
-      registerSuccess: "Owner registered successfully",
-      loginSuccess: "Owner loggedin successfully",
+    user: {
+      registerSuccess: "User registered successfully",
+      loginSuccess: "User loggedin successfully",
     },
   },
   failed: {
     restaurantNotFound: "Restaurant not found for given id",
-    owner: {
-      notFound: "Owner with email associated not found.",
+    user: {
+      notFound: "User with email associated not found.",
       incorrectPassword: "Password provided is incorrect",
+      emailAlreadtExists:
+        "Provided email is already used. Please use another email",
     },
   },
   validation: {
@@ -62,7 +64,7 @@ export const message = {
         invalid: "Restaurant ID must be a valid string",
       },
     },
-    owner: {
+    user: {
       name: {
         required: "Name is required",
         min: "Name must have atleast 3 letters",

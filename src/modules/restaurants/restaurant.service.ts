@@ -3,6 +3,7 @@ import { Request } from "express";
 import mongoose, { FilterQuery } from "mongoose";
 import { NotFoundError } from "utils/errors";
 import { message } from "utils/messages";
+import { toRestaurantResponseDto } from "./restaurant.dto";
 
 export const listRestaurants = async (req: Request) => {
   const { search = null, limit = 10 } = <Record<string, string | number>>(
@@ -22,7 +23,7 @@ export const listRestaurants = async (req: Request) => {
     ...where,
   }).limit(Number(limit));
 
-  return list;
+  return list.map(toRestaurantResponseDto);
 };
 
 export const RestaurantDetail = async (req: Request) => {
@@ -51,5 +52,5 @@ export const RestaurantDetail = async (req: Request) => {
     throw new NotFoundError(message.failed.restaurantNotFound);
   }
 
-  return foundRestaurant[0];
+  return toRestaurantResponseDto(foundRestaurant[0]);
 };

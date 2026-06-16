@@ -1,18 +1,19 @@
+import dotenv from "dotenv";
+
+// integrate env
+dotenv.config();
+
 import express, { Request, Response } from "express";
 import cors from "cors";
 import { connectDB } from "./config/db.ts";
 import logger from "./utils/logger.ts";
 import router from "routes.ts";
-import dotenv from "dotenv";
 import StorageService from "services/storage.service.ts";
 import ImageService from "services/image.service.ts";
 import { BUCKET_NAME, s3Client } from "config/s3.ts";
 import { globalErrorHandler } from "utils/errors.ts";
 import swaggerUi from "swagger-ui-express";
 import { buildSwaggerSpec } from "docs/swagger.config.ts";
-
-// integrate env
-dotenv.config();
 
 const PORT = 3000;
 const app = express();
@@ -48,7 +49,7 @@ app.use(express.json());
     app.locals.storageService = storageService;
 
     // Connect MongoDB
-    connectDB();
+    await connectDB();
 
     // Routes
     app.get("/", (req: Request, res: Response) => {
@@ -64,9 +65,7 @@ app.use(express.json());
         customSiteTitle: "Restaurant API Docs",
       }),
     );
-    logger.info(
-      `📚 Swagger UI live at http://localhost:${PORT}/api/docs`,
-    );
+    logger.info(`📚 Swagger UI live at http://localhost:${PORT}/api/docs`);
 
     app.use("/api", router);
 

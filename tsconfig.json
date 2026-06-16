@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "sourceMap": true,
+    "skipLibCheck": true,
     "inlineSources": true,
     "esModuleInterop": true,
     "allowImportingTsExtensions": true,

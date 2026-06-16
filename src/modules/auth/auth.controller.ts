@@ -1,0 +1,47 @@
+import { Request, Response, NextFunction } from "express";
+import { handleResponse } from "utils/helpers";
+import logger from "utils/logger";
+import { message } from "utils/messages";
+import { login, register } from "./auth.service";
+
+export const authRegister = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    await register(req);
+    handleResponse(res, message.success.user.registerSuccess);
+  } catch (error) {
+    logger.error({
+      message: "Error in authRegister",
+      error: error instanceof Error ? error.message : error,
+      stack: error instanceof Error ? error.stack : undefined,
+      route: req.originalUrl,
+      method: req.method,
+      body: req.body,
+    });
+    next(error);
+  }
+};
+
+export const authLogin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const userTokens = await login(req);
+    handleResponse(res, message.success.user.loginSuccess, userTokens);
+  } catch (error) {
+    logger.error({
+      message: "Error in authLogin",
+      error: error instanceof Error ? error.message : error,
+      stack: error instanceof Error ? error.stack : undefined,
+      route: req.originalUrl,
+      method: req.method,
+      body: req.body,
+    });
+    next(error);
+  }
+};

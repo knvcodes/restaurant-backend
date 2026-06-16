@@ -1,15 +1,17 @@
 import mongoose, { Schema, Document, Model, Types } from "mongoose";
 import bcrypt from "bcryptjs";
+import { CUSTOMER, ADMIN, OWNER } from "config/vars";
 
 // Interface
-export interface IOwner extends Document {
+export interface IUsers extends Document {
   name: string;
   email: string;
   password: string;
+  role: string;
 }
 
 // Schema
-const OwnerSchema: Schema<IOwner> = new Schema(
+const UsersSchema: Schema<IUsers> = new Schema(
   {
     name: { type: String, required: true, minlength: 3, maxlength: 50 },
     email: {
@@ -25,13 +27,18 @@ const OwnerSchema: Schema<IOwner> = new Schema(
       unique: true,
       select: false,
     },
+    role: {
+      type: String,
+      required: true,
+      enum: [ADMIN, OWNER, CUSTOMER],
+    },
   },
   {
     timestamps: true,
   },
 );
 
-OwnerSchema.pre("save", async function (next) {
+UsersSchema.pre("save", async function (next) {
   // Don't hash again if password wasn't changed
   if (!this.isModified("password")) {
     return next();
@@ -42,6 +49,6 @@ OwnerSchema.pre("save", async function (next) {
 });
 
 // Model
-const Owner: Model<IOwner> = mongoose.model<IOwner>("Owner", OwnerSchema);
+const Users: Model<IUsers> = mongoose.model<IUsers>("Users", UsersSchema);
 
-export default Owner;
+export default Users;

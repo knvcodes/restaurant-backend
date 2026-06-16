@@ -21,7 +21,6 @@ const auth =
         token,
         process.env.JWT_SECRET as string,
       ) as TokenPayload;
-      console.info("decoded:===>", decoded);
 
       // if allowed roles
       if (includesRole(decoded.role, roles)) {
