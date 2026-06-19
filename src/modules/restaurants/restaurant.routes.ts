@@ -5,7 +5,7 @@ import { ADMIN_ROLE, ALL_ROLES } from "config/roles";
 
 const restaurantRouter = express.Router();
 
-restaurantRouter.get("/list", auth(ALL_ROLES), restaurantsListing);
+restaurantRouter.get("/list", restaurantsListing);
 restaurantRouter.get("/:id", restaurantDetails);
 
 export default restaurantRouter;

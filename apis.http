@@ -36,7 +36,7 @@ GET {{baseUrl}}/api/restaurants/list
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiamFtZXMiLCJyb2xlIjpbIm93bmVyIl0sImlhdCI6MTc4MTU5Nzk5MywiZXhwIjoxNzgxNTk4NTkzfQ.h09nb0FuIS9GwtCMMMA0e3q6uVNH-8hzAh4ucAtmTsk
 
 ### Restaurant by id
-GET {{baseUrl}}/api/restaurants/6a2ab2675e8f92e9f4bd31f4
+GET {{baseUrl}}/api/restaurants/6a34fa7c84b8dea97574cc53
 
 
 
