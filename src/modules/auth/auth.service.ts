@@ -1,8 +1,8 @@
-import { Request } from "express";
+import { Request, Response } from "express";
 import { ConflictError, NotFoundError, UnauthorizedError } from "utils/errors";
 import { message } from "utils/messages";
 import { passwordMatch } from "utils/helpers";
-import { generateJWT } from "services/jwt.service";
+import { generateJWT, setTokenCookies } from "services/jwt.service";
 import Users from "modules/users/users.model";
 
 export const register = async (req: Request) => {
@@ -28,7 +28,7 @@ export const register = async (req: Request) => {
   }
 };
 
-export const login = async (req: Request) => {
+export const login = async (req: Request, res: Response) => {
   try {
     const { password, email } = req.body;
 
@@ -50,6 +50,7 @@ export const login = async (req: Request) => {
         name: findUser.name,
         role: findUser.role,
       });
+
       return tokens;
     } else {
       throw new UnauthorizedError(message.failed.user.incorrectPassword);

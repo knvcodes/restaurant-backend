@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 
 // integrate env
 dotenv.config();
@@ -27,6 +28,8 @@ app.use(
     credentials: true, // optional if you send cookies or auth headers
   }),
 );
+
+app.use(cookieParser());
 
 // Middleware to parse JSON
 app.use(express.json());

@@ -3,6 +3,7 @@ import { handleResponse } from "utils/helpers";
 import logger from "utils/logger";
 import { message } from "utils/messages";
 import { login, register } from "./auth.service";
+import { setTokenCookies } from "services/jwt.service";
 
 export const authRegister = async (
   req: Request,
@@ -52,7 +53,8 @@ export const authLogin = async (
   next: NextFunction,
 ) => {
   try {
-    const userTokens = await login(req);
+    const userTokens = await login(req, res);
+    setTokenCookies(res, userTokens);
     handleResponse(res, message.success.user.loginSuccess, userTokens);
   } catch (error) {
     logger.error({

@@ -53,3 +53,28 @@ docker run -p 9000:9000 -p 9001:9001 \
 ### clear all collections
 
 - npm run cleardb
+
+## Test Credentials
+
+### Admin
+
+| Field    | Value                  |
+| -------- | ---------------------- |
+| Email    | `admin@restaurant.com` |
+| Password | `Admin@123`            |
+
+### Owners
+
+| #   | Name          | Email                          | Password    |
+| --- | ------------- | ------------------------------ | ----------- |
+| 1   | John Smith    | `john.smith@restaurant.com`    | `Owner@123` |
+| 2   | Sarah Johnson | `sarah.johnson@restaurant.com` | `Owner@123` |
+
+### Customers
+
+| #   | Name         | Email             | Password       |
+| --- | ------------ | ----------------- | -------------- |
+| 1   | Alice Cooper | `alice@email.com` | `Customer@123` |
+| 2   | Bob Martin   | `bob@email.com`   | `Customer@123` |
+
+---

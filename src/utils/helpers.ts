@@ -48,8 +48,8 @@ export const passwordMatch = async (password: string, hash: string) => {
   }
 };
 
-export const includesRole = (roleArray: string[], toCheckInArray: string[]) => {
-  if (roleArray.every((role) => toCheckInArray.includes(role))) {
+export const includesRole = (role: string, toCheckInArray: string[]) => {
+  if (toCheckInArray.includes(role)) {
     return true;
   } else {
     return false;

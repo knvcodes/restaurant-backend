@@ -5,22 +5,26 @@ import jwt from "jsonwebtoken";
 
 export type TokenPayload = {
   name: string;
-  role: string[];
+  role: string;
 };
 
 const auth =
   (roles: string[]) => (req: Request, res: Response, next: NextFunction) => {
-    const token = req.headers.authorization;
+    const { accessToken } = req.cookies;
 
-    if (isEmpty(token)) {
+    console.info("cookie:===>", accessToken);
+
+    if (isEmpty(accessToken)) {
       throw new UnauthorizedError();
     }
 
-    if (token) {
+    if (accessToken) {
       const decoded = jwt.verify(
-        token,
+        accessToken,
         process.env.JWT_SECRET as string,
       ) as TokenPayload;
+
+      console.info("decoded:===>", decoded);
 
       // if allowed roles
       if (includesRole(decoded.role, roles)) {
