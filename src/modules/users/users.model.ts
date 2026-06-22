@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document, Model, Types } from "mongoose";
 import bcrypt from "bcryptjs";
-import { CUSTOMER, ADMIN, OWNER } from "config/vars";
+import { ADMIN, CUSTOMER, OWNER } from "../../config/vars.ts";
 
 // Interface
 export interface IUsers extends Document {
@@ -27,7 +27,6 @@ const UsersSchema: Schema<IUsers> = new Schema(
     password: {
       type: String,
       required: true,
-      unique: true,
       select: false,
     },
     role: {
