@@ -25,6 +25,27 @@ export const authRegister = async (
   }
 };
 
+export const oauthRegister = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    await register(req);
+    handleResponse(res, message.success.user.registerSuccess);
+  } catch (error) {
+    logger.error({
+      message: "Error in oauthRegister",
+      error: error instanceof Error ? error.message : error,
+      stack: error instanceof Error ? error.stack : undefined,
+      route: req.originalUrl,
+      method: req.method,
+      body: req.body,
+    });
+    next(error);
+  }
+};
+
 export const authLogin = async (
   req: Request,
   res: Response,

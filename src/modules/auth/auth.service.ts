@@ -3,7 +3,6 @@ import { ConflictError, NotFoundError, UnauthorizedError } from "utils/errors";
 import { message } from "utils/messages";
 import { passwordMatch } from "utils/helpers";
 import { generateJWT } from "services/jwt.service";
-import { OWNER_ROLE } from "config/roles";
 import Users from "modules/users/users.model";
 
 export const register = async (req: Request) => {

@@ -8,6 +8,9 @@ export interface IUsers extends Document {
   email: string;
   password: string;
   role: string;
+  avatar?: string;
+  isOAuth: boolean;
+  googleId?: string;
 }
 
 // Schema
@@ -32,6 +35,10 @@ const UsersSchema: Schema<IUsers> = new Schema(
       required: true,
       enum: [ADMIN, OWNER, CUSTOMER],
     },
+
+    googleId: { type: String, unique: true, sparse: true },
+    avatar: { type: String },
+    isOAuth: { type: Boolean, required: true },
   },
   {
     timestamps: true,

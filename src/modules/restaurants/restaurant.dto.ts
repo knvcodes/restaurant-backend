@@ -1,11 +1,11 @@
 import { IDishes } from "modules/dishes/dishes.model";
 import { IRestaurant } from "./restaurant.model";
 
-interface RestaurantDtoObj extends IRestaurant {
-  dishes: IDishes[];
+interface restaurantObj extends IRestaurant {
+  dishes?: IDishes[];
 }
 
-export const toRestaurantResponseDto = (restaurantObj: RestaurantDtoObj) => ({
+export const toRestaurantResponseDto = (restaurantObj: restaurantObj) => ({
   id: restaurantObj._id.toString(),
   restaurantId: restaurantObj.restaurant_id,
   name: restaurantObj.name,

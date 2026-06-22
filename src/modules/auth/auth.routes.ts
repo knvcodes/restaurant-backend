@@ -1,6 +1,6 @@
 import express from "express";
 import { validate } from "middlewares/validation";
-import { authLogin, authRegister } from "./auth.controller";
+import { authLogin, authRegister, oauthRegister } from "./auth.controller";
 import { authLoginSchema, authRegisterSchema } from "./auth.validate";
 
 const authRouter = express.Router();
@@ -12,6 +12,6 @@ authRouter.post("/login", validate(authLoginSchema), authLogin);
 // authRouter.post("/resetPassword", authRegister);
 
 // google ouath
-authRouter.post("/register/oauth", validate(authRegisterSchema), authRegister);
+authRouter.post("/register/oauth", oauthRegister);
 
 export default authRouter;
