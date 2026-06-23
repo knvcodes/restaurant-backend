@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import { ConflictError, NotFoundError, UnauthorizedError } from "utils/errors";
 import { message } from "utils/messages";
-import { passwordMatch } from "utils/helpers";
+import { isEmpty, passwordMatch } from "utils/helpers";
 import { generateJWT, setTokenCookies } from "services/jwt.service";
 import Users from "modules/users/users.model";
+import { verifyGoogleToken } from "config/google";
 
 export const register = async (req: Request) => {
   try {
@@ -55,6 +56,70 @@ export const login = async (req: Request, res: Response) => {
     } else {
       throw new UnauthorizedError(message.failed.user.incorrectPassword);
     }
+  } catch (error: unknown) {
+    throw error;
+  }
+};
+
+export const oauthLogin = async (req: Request) => {
+  try {
+    const { credential } = req.body;
+
+    if (isEmpty(credential)) {
+      throw new UnauthorizedError();
+    }
+    // 1. Verify Google ID token
+    const payload = await verifyGoogleToken(credential);
+
+    // invalid token throw error
+    if (!payload) throw new UnauthorizedError("Invalid Token");
+
+    console.info("payload:===>", payload);
+
+    // 2. Extract user info
+    const { sub: googleId, email, name, picture } = payload;
+
+    // 3. Find or create user in database
+    const existingUser = await Users.findOne({
+      email,
+    });
+
+    let user = null;
+    if (!existingUser) {
+      user = await Users.create({
+        email,
+        isOAuth: true,
+        name,
+        role: "customer",
+        googleId,
+        avatar: picture,
+      });
+    } else {
+      user = await Users.findOneAndUpdate(
+        { email },
+        {
+          $setOnInsert: { name, role: "customer" },
+          $set: { googleId, avatar: picture, isOAuth: true },
+        },
+        { upsert: true, new: true }, // create if missing, return updated doc
+      );
+    }
+
+    // 4. Generate JWTs
+    if (user) {
+      const tokens = generateJWT({
+        name: user.name,
+        role: user.role,
+      });
+
+      return tokens;
+    } else {
+      throw new NotFoundError("User not found");
+    }
+
+    // 5. Store refresh token hash in DB (for revocation)
+
+    // 6. Set HTTP-only cookies
   } catch (error: unknown) {
     throw error;
   }

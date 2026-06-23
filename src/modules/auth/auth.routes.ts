@@ -19,6 +19,6 @@ authRouter.post(
 // authRouter.post("/resetPassword", authRegister);
 
 // google ouath
-authRouter.post("/register/oauth", oauthRegister);
+authRouter.post("/oauth", oauthRegister);
 
 export default authRouter;
