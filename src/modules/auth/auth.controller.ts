@@ -32,9 +32,9 @@ export const oauthRegister = async (
   next: NextFunction,
 ) => {
   try {
-    const tokens = await oauthLogin(req);
+    const { tokens, userPayload } = await oauthLogin(req);
     setTokenCookies(res, tokens);
-    handleResponse(res, message.success.user.registerSuccess);
+    handleResponse(res, message.success.user.registerSuccess, userPayload);
   } catch (error) {
     logger.error({
       message: "Error in oauthLogin",

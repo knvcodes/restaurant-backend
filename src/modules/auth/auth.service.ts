@@ -112,7 +112,12 @@ export const oauthLogin = async (req: Request) => {
         role: user.role,
       });
 
-      return tokens;
+      const userPayload = {
+        name: user.name,
+        avatar: user.avatar,
+      };
+
+      return { tokens, userPayload };
     } else {
       throw new NotFoundError("User not found");
     }
