@@ -22,7 +22,11 @@ const app = express();
 // Enable CORS
 app.use(
   cors({
-    origin: ["http://localhost:3001", "http://127.0.0.1:3001"],
+    origin: [
+      "http://localhost:3001",
+      "http://localhost:4173",
+      "http://127.0.0.1:3001",
+    ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true, // optional if you send cookies or auth headers
