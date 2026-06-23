@@ -52,7 +52,12 @@ export const login = async (req: Request, res: Response) => {
         role: findUser.role,
       });
 
-      return tokens;
+      const userPayload = {
+        name: findUser.name,
+        role: findUser.role,
+      };
+
+      return { tokens, userPayload };
     } else {
       throw new UnauthorizedError(message.failed.user.incorrectPassword);
     }
@@ -115,6 +120,7 @@ export const oauthLogin = async (req: Request) => {
       const userPayload = {
         name: user.name,
         avatar: user.avatar,
+        role: user.role,
       };
 
       return { tokens, userPayload };

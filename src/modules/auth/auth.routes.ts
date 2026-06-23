@@ -8,12 +8,7 @@ import { ALL_ROLES } from "config/roles";
 const authRouter = express.Router();
 
 authRouter.post("/register", validate(authRegisterSchema), authRegister);
-authRouter.post(
-  "/login",
-  auth(ALL_ROLES),
-  validate(authLoginSchema),
-  authLogin,
-);
+authRouter.post("/login", validate(authLoginSchema), authLogin);
 // authRouter.post("/forgotPassword", authRegister);
 // authRouter.post("/changePassword", authRegister);
 // authRouter.post("/resetPassword", authRegister);

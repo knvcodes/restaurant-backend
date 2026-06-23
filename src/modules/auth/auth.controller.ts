@@ -54,9 +54,9 @@ export const authLogin = async (
   next: NextFunction,
 ) => {
   try {
-    const userTokens = await login(req, res);
-    setTokenCookies(res, userTokens);
-    handleResponse(res, message.success.user.loginSuccess, userTokens);
+    const { tokens, userPayload } = await login(req, res);
+    setTokenCookies(res, tokens);
+    handleResponse(res, message.success.user.loginSuccess, userPayload);
   } catch (error) {
     logger.error({
       message: "Error in authLogin",
