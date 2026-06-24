@@ -61,6 +61,7 @@ Default endpoints:
 
 ### redis docker service
 
+- docker run -d --name redis -p 6379:6379 redis:latest
 - docker run -p 5540:5540 redis/redisinsight:latest
 - Then access at http://localhost:5540.
 

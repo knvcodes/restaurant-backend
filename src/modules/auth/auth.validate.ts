@@ -33,3 +33,34 @@ export const authLoginSchema = z.object({
       ),
   }),
 });
+
+export const authForgotPasswordSchema = z.object({
+  body: z.object({
+    email: z.email(message.validation.user.email.invalid),
+  }),
+});
+
+export const authResetPasswordSchema = z.object({
+  body: z
+    .object({
+      token: z.string().min(32, message.validation.user.password.token),
+      newPassword: z
+        .string()
+        .min(8)
+        .regex(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+          message.validation.user.password.invalid,
+        ),
+      confirmPassword: z
+        .string()
+        .min(8)
+        .regex(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+          message.validation.user.password.invalid,
+        ),
+    })
+    .refine((data) => data.newPassword === data.confirmPassword, {
+      message: "Passwords do not match",
+      path: ["confirmPassword"],
+    }),
+});

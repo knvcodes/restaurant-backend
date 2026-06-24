@@ -2,7 +2,13 @@ import { Request, Response, NextFunction } from "express";
 import { handleResponse } from "utils/helpers";
 import logger from "utils/logger";
 import { message } from "utils/messages";
-import { forgotPassword, login, oauthLogin, register } from "./auth.service";
+import {
+  forgotPassword,
+  login,
+  oauthLogin,
+  register,
+  resetPassword,
+} from "./auth.service";
 import { setTokenCookies } from "services/jwt.service";
 import { sendEmail } from "services/email.service";
 
@@ -89,6 +95,27 @@ export const authForgotPassword = async (
   } catch (error) {
     logger.error({
       message: "Error in authForgotPassword",
+      error: error instanceof Error ? error.message : error,
+      stack: error instanceof Error ? error.stack : undefined,
+      route: req.originalUrl,
+      method: req.method,
+      body: req.body,
+    });
+    next(error);
+  }
+};
+
+export const authResetPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    await resetPassword(req);
+    handleResponse(res, message.success.user.resetPassword);
+  } catch (error) {
+    logger.error({
+      message: "Error in authResetPassword",
       error: error instanceof Error ? error.message : error,
       stack: error instanceof Error ? error.stack : undefined,
       route: req.originalUrl,

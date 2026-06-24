@@ -21,13 +21,32 @@ Content-Type: {{contentType}}
 }
 
 ### login
-POST {{baseUrl}}/api/owner/login
+POST {{baseUrl}}/api/auth/login
 Content-Type: {{contentType}}
 
 {
-  "email": "test@yopmail.com",
-  "password": "Test@123"
+  "email": "john.smith@restaurant.com",
+  "password": "Owner@1234"
 }
+
+### forgot password
+POST {{baseUrl}}/api/auth/forgotPassword
+Content-Type: {{contentType}}
+
+{
+  "email": "john.smith@restaurant.com"
+}
+
+### reset password
+POST {{baseUrl}}/api/auth/resetPassword
+Content-Type: {{contentType}}
+
+{ 
+  "token": "7d6bcbb355fc05faebe5dbe4441ebee882911733c345dc451e9afca48f9abf1a",
+  "newPassword": "Owner@1234",
+  "confirmPassword": "Owner@1234"
+}
+
 
 # RESTAURANT
 

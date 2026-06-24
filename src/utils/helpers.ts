@@ -2,6 +2,7 @@ import { Response } from "express";
 import logger from "./logger";
 import { withLocation } from "./loggerHelper";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 
 export const handleResponse = (res: Response, msg: string, data?: unknown) => {
   res.json({
@@ -54,4 +55,8 @@ export const includesRole = (role: string, toCheckInArray: string[]) => {
   } else {
     return false;
   }
+};
+
+export const generateRandomToken = () => {
+  return crypto.randomBytes(32).toString("hex");
 };

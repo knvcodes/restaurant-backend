@@ -1,3 +1,5 @@
+import { resetPassword } from "modules/auth/auth.service";
+
 export const message = {
   success: {
     addDish: "Dish added successfully",
@@ -11,6 +13,7 @@ export const message = {
       loginSuccess: "User loggedin successfully",
       forgotPasswordLink:
         "A reset link has been sent to your registered email.",
+      resetPassword: "Password has been reset successfully.",
     },
   },
   failed: {
@@ -20,6 +23,8 @@ export const message = {
       incorrectPassword: "Password provided is incorrect",
       emailAlreadtExists:
         "Provided email is already used. Please use another email",
+      resetPasswordTokenExpired:
+        "Reset password token expired. Please try forgot password again.",
     },
   },
   validation: {
@@ -76,6 +81,8 @@ export const message = {
         invalid: "Please enter valid email",
       },
       password: {
+        notMatch: "Passwords do not match",
+        token: "Invalid token. Please try again.",
         required: "Password is required",
         invalid:
           "Password must contain uppercase, lowercase, number, and special character, and be at least 8 characters long.",

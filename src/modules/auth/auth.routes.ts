@@ -4,18 +4,32 @@ import {
   authForgotPassword,
   authLogin,
   authRegister,
+  authResetPassword,
   oauthRegister,
 } from "./auth.controller";
-import { authLoginSchema, authRegisterSchema } from "./auth.validate";
+import {
+  authForgotPasswordSchema,
+  authLoginSchema,
+  authRegisterSchema,
+  authResetPasswordSchema,
+} from "./auth.validate";
 
 const authRouter = express.Router();
 
 authRouter.post("/register", validate(authRegisterSchema), authRegister);
 authRouter.post("/login", validate(authLoginSchema), authLogin);
 
-authRouter.post("/forgotPassword", authForgotPassword);
+authRouter.post(
+  "/forgotPassword",
+  validate(authForgotPasswordSchema),
+  authForgotPassword,
+);
+authRouter.post(
+  "/resetPassword",
+  validate(authResetPasswordSchema),
+  authResetPassword,
+);
 // authRouter.post("/changePassword", authRegister);
-// authRouter.post("/resetPassword", authRegister);
 
 // google ouath
 authRouter.post("/oauth", oauthRegister);

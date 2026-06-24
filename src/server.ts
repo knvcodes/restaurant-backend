@@ -15,6 +15,8 @@ import { BUCKET_NAME, s3Client } from "config/s3.ts";
 import { globalErrorHandler } from "utils/errors.ts";
 import swaggerUi from "swagger-ui-express";
 import { buildSwaggerSpec } from "docs/swagger.config.ts";
+import { connectRedis } from "config/redis.ts";
+import { saveForgetPasswordToken } from "services/redis.service.ts";
 
 const PORT = 3000;
 const app = express();
@@ -57,6 +59,9 @@ app.use(express.json());
 
     // Connect MongoDB
     await connectDB();
+
+    // Connect Redis
+    await connectRedis();
 
     // Routes
     app.get("/", (req: Request, res: Response) => {

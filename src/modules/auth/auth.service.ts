@@ -1,10 +1,16 @@
 import { Request, Response } from "express";
 import { ConflictError, NotFoundError, UnauthorizedError } from "utils/errors";
 import { message } from "utils/messages";
-import { isEmpty, passwordMatch } from "utils/helpers";
+import { generateRandomToken, isEmpty, passwordMatch } from "utils/helpers";
 import { generateJWT } from "services/jwt.service";
 import Users from "modules/users/users.model";
 import { verifyGoogleToken } from "config/google";
+import {
+  isResetPasswordTokenValid,
+  saveForgetPasswordToken,
+} from "services/redis.service";
+import { sendEmail } from "services/email.service";
+import { Mongoose } from "mongoose";
 
 export const register = async (req: Request) => {
   try {
@@ -136,28 +142,61 @@ export const oauthLogin = async (req: Request) => {
   }
 };
 
-export const forgotPassword = (req: Request) => {
+export const forgotPassword = async (req: Request) => {
   try {
+    const { email } = req.body;
     // find user by email
+    const findUser = await Users.findOne({
+      email,
+    });
+
     // if user not found throw notfound error
+    if (!findUser) {
+      throw new NotFoundError(message.failed.user.notFound);
+    }
+
     // if user found create token and save them in redis after deleting existing tokens
-    // new token needs user id inside
-    // add expiry for token
+    const randomToken = generateRandomToken();
+    await saveForgetPasswordToken(randomToken, findUser.id);
+
     // email the link with token
+    await sendEmail({
+      to: "someone@example.com",
+      subject: "forgot password",
+      text: randomToken,
+    });
   } catch (error) {
     throw error;
   }
 };
 
-export const resetPassword = (req: Request) => {
+export const resetPassword = async (req: Request) => {
   try {
+    const { token, newPassword, confirmPassword } = req.body;
+
     // validate token
+    const userId = await isResetPasswordTokenValid(token);
+
     // if invalid throw Unauth error
-    // if valid remove tokens from redis
-    // get user id from token
+    if (!userId) {
+      throw new UnauthorizedError(
+        message.failed.user.resetPasswordTokenExpired,
+      );
+    }
+
     // find user
-    // if user not found throw not found error
+    const foundUser = await Users.findById(userId);
+
+    // if user not found
+    if (!foundUser) {
+      throw new NotFoundError(message.failed.user.notFound);
+    }
+
     // if user found update new passwords
+    foundUser.password = newPassword;
+    await foundUser.save();
+
+    return;
   } catch (error) {
     throw error;
   }
