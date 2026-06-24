@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { ConflictError, NotFoundError, UnauthorizedError } from "utils/errors";
 import { message } from "utils/messages";
 import { isEmpty, passwordMatch } from "utils/helpers";
-import { generateJWT, setTokenCookies } from "services/jwt.service";
+import { generateJWT } from "services/jwt.service";
 import Users from "modules/users/users.model";
 import { verifyGoogleToken } from "config/google";
 
@@ -132,6 +132,33 @@ export const oauthLogin = async (req: Request) => {
 
     // 6. Set HTTP-only cookies
   } catch (error: unknown) {
+    throw error;
+  }
+};
+
+export const forgotPassword = (req: Request) => {
+  try {
+    // find user by email
+    // if user not found throw notfound error
+    // if user found create token and save them in redis after deleting existing tokens
+    // new token needs user id inside
+    // add expiry for token
+    // email the link with token
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const resetPassword = (req: Request) => {
+  try {
+    // validate token
+    // if invalid throw Unauth error
+    // if valid remove tokens from redis
+    // get user id from token
+    // find user
+    // if user not found throw not found error
+    // if user found update new passwords
+  } catch (error) {
     throw error;
   }
 };

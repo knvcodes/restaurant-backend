@@ -59,6 +59,7 @@ export class InternalError extends HttpError {
   }
 }
 
+// @ts-expect-error
 export const globalErrorHandler = (err, _req, res, _next) => {
   logger.error({ err }, "Unhandled error in globalErrorHandler");
 

@@ -2,8 +2,9 @@ import { Request, Response, NextFunction } from "express";
 import { handleResponse } from "utils/helpers";
 import logger from "utils/logger";
 import { message } from "utils/messages";
-import { login, oauthLogin, register } from "./auth.service";
+import { forgotPassword, login, oauthLogin, register } from "./auth.service";
 import { setTokenCookies } from "services/jwt.service";
+import { sendEmail } from "services/email.service";
 
 export const authRegister = async (
   req: Request,
@@ -56,10 +57,38 @@ export const authLogin = async (
   try {
     const { tokens, userPayload } = await login(req, res);
     setTokenCookies(res, tokens);
+
+    sendEmail({
+      to: "recipient@example.com",
+      subject: "Hello",
+      text: "Plain text version",
+      html: "<b>HTML version</b>",
+    });
     handleResponse(res, message.success.user.loginSuccess, userPayload);
   } catch (error) {
     logger.error({
       message: "Error in authLogin",
+      error: error instanceof Error ? error.message : error,
+      stack: error instanceof Error ? error.stack : undefined,
+      route: req.originalUrl,
+      method: req.method,
+      body: req.body,
+    });
+    next(error);
+  }
+};
+
+export const authForgotPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    await forgotPassword(req);
+    handleResponse(res, message.success.user.forgotPasswordLink);
+  } catch (error) {
+    logger.error({
+      message: "Error in authForgotPassword",
       error: error instanceof Error ? error.message : error,
       stack: error instanceof Error ? error.stack : undefined,
       route: req.originalUrl,

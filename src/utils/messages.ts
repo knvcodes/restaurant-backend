@@ -9,6 +9,8 @@ export const message = {
     user: {
       registerSuccess: "User registered successfully",
       loginSuccess: "User loggedin successfully",
+      forgotPasswordLink:
+        "A reset link has been sent to your registered email.",
     },
   },
   failed: {

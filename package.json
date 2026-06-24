@@ -21,7 +21,8 @@
     "seed": "node seeders/index.js",
     "seed:docker": "docker compose exec backend npx tsx seeders/index.js",
     "docker:npm:i": "docker compose exec backend npm install",
-    "docker:restart": "docker compose up -d backend"
+    "docker:restart": "docker compose up -d backend",
+    "email": "mailpit"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1041.0",
@@ -39,6 +40,7 @@
     "migrate-mongo": "^14.0.7",
     "mongoose": "^8.19.1",
     "multer": "^2.1.1",
+    "nodemailer": "^9.0.1",
     "pino": "^10.0.0",
     "pino-pretty": "^13.1.2",
     "redis": "^6.0.0",
@@ -57,6 +59,7 @@
     "@types/mongoose": "^5.11.97",
     "@types/multer": "^2.1.0",
     "@types/node": "^24.13.0",
+    "@types/nodemailer": "^8.0.1",
     "@types/swagger-ui-express": "^4.1.7",
     "@types/uuid": "^10.0.0",
     "ts-node-dev": "^2.0.0",

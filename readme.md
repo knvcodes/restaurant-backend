@@ -45,6 +45,20 @@ docker run -p 9000:9000 -p 9001:9001 \
  -e "MINIO_ROOT_PASSWORD=password123" \
  quay.io/minio/minio server /data --console-address ":9001"
 
+### mailpit service
+
+docker run -d \
+ --name=mailpit \
+ --restart unless-stopped \
+ -p 8025:8025 \
+ -p 1025:1025 \
+ axllent/mailpit
+
+Default endpoints:
+
+- Web UI: http://localhost:8025
+- SMTP: localhost:1025
+
 ### redis docker service
 
 - docker run -p 5540:5540 redis/redisinsight:latest
