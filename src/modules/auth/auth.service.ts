@@ -161,9 +161,9 @@ export const forgotPassword = async (req: Request) => {
 
     // email the link with token
     await sendEmail({
-      to: "someone@example.com",
-      subject: "forgot password",
-      text: randomToken,
+      to: findUser.email,
+      subject: "Restaurant management - Forgot password",
+      text: `Click the link to reset your password - ${process.env.FRONTEND_URL}/resetPassword/${randomToken}`,
     });
   } catch (error) {
     throw error;
