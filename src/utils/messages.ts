@@ -2,6 +2,7 @@ import { resetPassword } from "modules/auth/auth.service";
 
 export const message = {
   email: {
+    appName: "Restaurant Management",
     register: "Go to restaurant management.",
     registerDetails:
       "Your account is ready. Start exploring restaurants, saving favorites, and booking tables in seconds.",

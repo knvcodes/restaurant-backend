@@ -12,6 +12,7 @@ import {
 import { sendEmail } from "services/email.service";
 import { welcomeStyles } from "templates/welcome.styles";
 import { generateEmailTemplate } from "services/template.service";
+import { title } from "process";
 
 export const register = async (req: Request) => {
   try {
@@ -180,10 +181,22 @@ export const forgotPassword = async (req: Request) => {
     await saveForgetPasswordToken(randomToken, findUser.id);
 
     // email the link with token
+    const template = await generateEmailTemplate(
+      "forgotpassword",
+      {
+        message: "Click below to reset your password",
+        title: "Reset Passoword",
+        link: `${process.env.FRONTEND_URL}/resetPassword/${randomToken}`,
+        buttonText: "Reset Password",
+      },
+      welcomeStyles,
+    );
+
     await sendEmail({
       to: findUser.email,
       subject: "Restaurant management - Forgot password",
       text: `Click the link to reset your password - ${process.env.FRONTEND_URL}/resetPassword/${randomToken}`,
+      html: template,
     });
   } catch (error) {
     throw error;

@@ -4,4 +4,6 @@ export const welcomeStyles = {
   h1: "font-size:18px;color:#111;margin:0 0 12px;",
   p: "font-size:14px;color:#666;line-height:1.5;margin:0 0 16px;",
   a: "display:inline-block;padding:10px 20px;border-radius:6px;text-decoration:none;font-size:14px;",
+  button:
+    "background:#f0b100;font-weight:600;width:400px;padding-inline:10px;font-size:20px;font-style:bold;border-radius:5px;padding-block:5px;border:none",
 };
