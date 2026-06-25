@@ -10,7 +10,8 @@ import {
   saveForgetPasswordToken,
 } from "services/redis.service";
 import { sendEmail } from "services/email.service";
-import { Mongoose } from "mongoose";
+import { welcomeStyles } from "templates/welcome.styles";
+import { generateEmailTemplate } from "services/template.service";
 
 export const register = async (req: Request) => {
   try {
@@ -30,6 +31,24 @@ export const register = async (req: Request) => {
       email,
       role,
       isOAuth,
+    });
+
+    // send email for joining
+    const template = await generateEmailTemplate(
+      "welcome",
+      {
+        name,
+        message: message.email.registerDetails,
+        buttonText: message.email.register,
+        link: process.env.FRONTEND_URL || "http://localhost:3001",
+      },
+      welcomeStyles,
+    );
+    await sendEmail({
+      subject: "Welcome",
+      to: email,
+      text: "Welcome bud",
+      html: template,
     });
   } catch (error: unknown) {
     throw error;
