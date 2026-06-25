@@ -14,7 +14,7 @@ import { Mongoose } from "mongoose";
 
 export const register = async (req: Request) => {
   try {
-    const { name, password, email, role } = req.body;
+    const { name, password, email, role, isOAuth } = req.body;
 
     const emailAlreadyUsed = await Users.findOne({
       email,
@@ -29,6 +29,7 @@ export const register = async (req: Request) => {
       password,
       email,
       role,
+      isOAuth,
     });
   } catch (error: unknown) {
     throw error;

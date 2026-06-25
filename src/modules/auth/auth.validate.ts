@@ -18,6 +18,7 @@ export const authRegisterSchema = z.object({
         message.validation.user.password.invalid,
       ),
     role: z.enum([ADMIN, OWNER, CUSTOMER]),
+    isOAuth: z.boolean(),
   }),
 });
 
