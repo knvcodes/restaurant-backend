@@ -32,7 +32,7 @@ const DishesSchema: Schema<IDishes> = new Schema(
     // Example array of objects
     serving: [
       {
-        title: { type: String },
+        type: { type: String },
         value: { type: Number },
         price: { type: Number },
         currency: { type: String },

@@ -1,6 +1,8 @@
+import { randomUUID } from "node:crypto";
 import Dishes from "../src/modules/dishes/dishes.model.ts";
 import Restaurants from "../src/modules/restaurants/restaurant.model.ts";
 import Supplements from "../src/modules/supplements/supplements.model.ts";
+import { type } from "node:os";
 
 // ── Sample Data ────────────────────────────────────────
 
@@ -86,7 +88,8 @@ function buildServing(basePrice) {
 
   for (let i = 0; i < count; i++) {
     servings.push({
-      title: servingTitles[i],
+      id: crypto.randomUUID(),
+      type: servingTitles[i],
       value: i + 1,
       price: parseFloat((basePrice * (1 + i * 0.5)).toFixed(2)),
       currency: pickRandom(currencies),
