@@ -20,29 +20,18 @@ const PORT = 3000;
 const app = express();
 
 // Enable CORS
-const allowedOrigins = [
-  "http://localhost:3001",
-  "http://localhost:4173",
-  "http://127.0.0.1:3001",
-  process.env.PROD_FRONTEND_URL!,
-].filter(Boolean);
-
 app.use(
   cors({
-    origin: function (origin, callback) {
-      // Allow requests with no origin (mobile apps, curl, server-to-server)
-      if (!origin) return callback(null, true);
-
-      if (allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        console.warn("CORS blocked origin:", origin);
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
+    origin: [
+      "http://localhost:3001",
+      "http://localhost:4173",
+      "http://127.0.0.1:3001",
+      process.env.PROD_FRONTEND_URL!,
+    ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: ["Content-Type", "Authorization", "origin"],
+
+    credentials: true, // optional if you send cookies or auth headers
   }),
 );
 
