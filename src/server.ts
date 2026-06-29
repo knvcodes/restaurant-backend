@@ -28,6 +28,7 @@ app.use(
       "http://localhost:3001",
       "http://localhost:4173",
       "http://127.0.0.1:3001",
+      !process.env.PROD_FRONTEND_URL,
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
