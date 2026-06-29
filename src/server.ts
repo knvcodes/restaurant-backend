@@ -38,7 +38,7 @@ console.info("check here:===>", [
   "http://localhost:3001",
   "http://localhost:4173",
   "http://127.0.0.1:3001",
-  !process.env.PROD_FRONTEND_URL,
+  process.env.PROD_FRONTEND_URL!,
 ]);
 
 app.use(cookieParser());
