@@ -46,9 +46,6 @@ app.use(
   }),
 );
 
-// IMPORTANT: Handle OPTIONS preflight explicitly
-app.options("*", cors());
-
 console.info("check here:===>", [
   "http://localhost:3001",
   "http://localhost:4173",
