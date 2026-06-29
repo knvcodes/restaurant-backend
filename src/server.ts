@@ -49,7 +49,7 @@ app.use(express.json());
     const storageService = new StorageService(s3Client, BUCKET_NAME);
 
     console.log("⏳ Checking MinIO bucket...");
-    await storageService.ensureBucketExists();
+    // await storageService.ensureBucketExists();
     console.log("✓ MinIO connected");
 
     // Make services available to routes
@@ -61,7 +61,7 @@ app.use(express.json());
     await connectDB();
 
     // Connect Redis
-    await connectRedis();
+    // await connectRedis();
 
     // Routes
     app.get("/", (req: Request, res: Response) => {

@@ -6,8 +6,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc",
-    "start": "node dist/server.js",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "tsx src/server.ts",
     "db:sync": "npx migrate-mongo down && npx migrate-mongo up",
     "db:sync:docker": "docker compose exec backend npx migrate-mongo down && docker compose exec backend npx migrate-mongo up",
     "generate": "ts-node scripts/generate.ts",

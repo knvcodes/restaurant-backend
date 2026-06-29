@@ -1,3 +1,4 @@
+import { ErrorRequestHandler } from "express";
 import logger from "./logger";
 
 // errors.ts
@@ -59,8 +60,12 @@ export class InternalError extends HttpError {
   }
 }
 
-// @ts-expect-error
-export const globalErrorHandler = (err, _req, res, _next) => {
+export const globalErrorHandler: ErrorRequestHandler = (
+  err,
+  _req,
+  res,
+  _next,
+) => {
   logger.error({ err }, "Unhandled error in globalErrorHandler");
 
   // Mongoose validation error

@@ -1,7 +1,4 @@
 import express from "express";
-import { ownerLogin, ownerRegister } from "./owner.controller";
-import { validate } from "middlewares/validation";
-import { ownerLoginSchema, ownerRegisterSchema } from "./owner.validate";
 
 const ownerRouter = express.Router();
 
