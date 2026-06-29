@@ -2,7 +2,12 @@ import { z } from "zod";
 
 export const restaurantListingSchema = z.object({
   query: z.object({
-    search: z.string().optional(),
+    search: z
+      .string()
+      .trim()
+      .max(50)
+      .transform((s) => s.replace(/[<>]/g, ""))
+      .optional(),
     limit: z
       .string()
       .regex(/^[0-9]+$/, "Limit must be a valid number")
@@ -12,6 +17,9 @@ export const restaurantListingSchema = z.object({
 
 export const restaurantDetailsSchema = z.object({
   params: z.object({
-    id: z.string().min(1, "Restaurant id is required"),
+    id: z
+      .string()
+      .min(1, "Restaurant id is required")
+      .regex(/^[0-9a-fA-F]{24}$/, "Invalid MongoDB ObjectId"),
   }),
 });

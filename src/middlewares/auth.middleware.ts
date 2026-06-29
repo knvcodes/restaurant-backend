@@ -1,15 +1,12 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { UnauthorizedError } from "utils/errors";
 import { includesRole, isEmpty } from "utils/helpers";
 import jwt from "jsonwebtoken";
-
-export type TokenPayload = {
-  name: string;
-  role: string;
-};
+import { CustomRequest, TokenPayload } from "utils/types";
 
 const auth =
-  (roles: string[]) => (req: Request, res: Response, next: NextFunction) => {
+  (roles: string[]) =>
+  (req: CustomRequest, res: Response, next: NextFunction) => {
     const { accessToken } = req.cookies;
 
     console.info("cookie:===>", accessToken);
@@ -24,10 +21,11 @@ const auth =
         process.env.JWT_SECRET as string,
       ) as TokenPayload;
 
-      console.info("decoded:===>", decoded);
-
       // if allowed roles
       if (includesRole(decoded.role, roles)) {
+        req.user = {
+          id: decoded.id,
+        };
         next();
       } else {
         throw new UnauthorizedError();

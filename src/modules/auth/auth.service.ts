@@ -75,6 +75,7 @@ export const login = async (req: Request, res: Response) => {
     // send tokens
     if (isPasswordMatch) {
       const tokens = generateJWT({
+        id: findUser.id,
         name: findUser.name,
         role: findUser.role,
       });

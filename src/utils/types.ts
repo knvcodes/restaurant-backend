@@ -38,3 +38,17 @@ export interface AuthenticatedRequest extends Request {
     role: string;
   };
 }
+
+// auth middleware
+
+export type TokenPayload = {
+  id: string;
+  name: string;
+  role: string;
+};
+
+export interface CustomRequest extends Request {
+  user: {
+    id: string;
+  };
+}

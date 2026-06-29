@@ -13,6 +13,7 @@ import {
   authRegisterSchema,
   authResetPasswordSchema,
 } from "./auth.validate";
+import { rateLimit } from "middlewares/ratelimiter.middleware";
 
 const authRouter = express.Router();
 
@@ -21,6 +22,7 @@ authRouter.post("/login", validate(authLoginSchema), authLogin);
 
 authRouter.post(
   "/forgotPassword",
+  rateLimit,
   validate(authForgotPasswordSchema),
   authForgotPassword,
 );
