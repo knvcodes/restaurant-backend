@@ -22,7 +22,12 @@ const app = express();
 // Enable CORS
 app.use(
   cors({
-    origin: process.env.PROD_FRONTEND_URL!,
+    origin: [
+      "http://localhost:3001",
+      "http://localhost:4173",
+      "http://127.0.0.1:3001",
+      process.env.PROD_FRONTEND_URL!,
+    ],
     credentials: true, // optional if you send cookies or auth headers
   }),
 );
