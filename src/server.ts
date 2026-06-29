@@ -15,8 +15,6 @@ import { BUCKET_NAME, s3Client } from "config/s3.ts";
 import { globalErrorHandler } from "utils/errors.ts";
 import swaggerUi from "swagger-ui-express";
 import { buildSwaggerSpec } from "docs/swagger.config.ts";
-import { connectRedis } from "config/redis.ts";
-import { saveForgetPasswordToken } from "services/redis.service.ts";
 
 const PORT = 3000;
 const app = express();
@@ -35,6 +33,13 @@ app.use(
     credentials: true, // optional if you send cookies or auth headers
   }),
 );
+
+console.info("check here:===>", [
+  "http://localhost:3001",
+  "http://localhost:4173",
+  "http://127.0.0.1:3001",
+  !process.env.PROD_FRONTEND_URL,
+]);
 
 app.use(cookieParser());
 
