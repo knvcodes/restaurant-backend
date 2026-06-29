@@ -22,11 +22,8 @@ const app = express();
 // Enable CORS
 app.use(
   cors({
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "origin"],
-
-    credentials: true, // optional if you send cookies or auth headers
+    origin: "https://poetic-tarsier-188c10.netlify.app",
+    credentials: true,
   }),
 );
 
