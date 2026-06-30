@@ -19,7 +19,7 @@ async function sendEmail(props: sendEmailProps) {
   try {
     const { to, subject, text, html = "" } = props;
 
-    if (process.env.SEND_EMAIL) {
+    if (process.env.SEND_EMAIL == "true") {
       const info = await transporter.sendMail({
         from: process.env.EMAIL_FROM,
         to,
