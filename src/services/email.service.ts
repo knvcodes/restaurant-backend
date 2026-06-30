@@ -19,15 +19,16 @@ async function sendEmail(props: sendEmailProps) {
   try {
     const { to, subject, text, html = "" } = props;
 
-    const info = await transporter.sendMail({
-      from: process.env.EMAIL_FROM,
-      to,
-      subject,
-      text,
-      html,
-    });
-
-    console.log("Message sent:", info.messageId);
+    if (process.env.SEND_EMAIL) {
+      const info = await transporter.sendMail({
+        from: process.env.EMAIL_FROM,
+        to,
+        subject,
+        text,
+        html,
+      });
+      console.log("Message sent:", info.messageId);
+    }
   } catch (error) {
     console.info("error:===>", error);
     throw new InternalError();

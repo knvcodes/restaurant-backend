@@ -64,12 +64,6 @@ export const authLogin = async (
     const { tokens, userPayload } = await login(req, res);
     setTokenCookies(res, tokens);
 
-    sendEmail({
-      to: "recipient@example.com",
-      subject: "Hello",
-      text: "Plain text version",
-      html: "<b>HTML version</b>",
-    });
     handleResponse(res, message.success.user.loginSuccess, userPayload);
   } catch (error) {
     logger.error({
