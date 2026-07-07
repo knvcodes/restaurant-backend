@@ -1,9 +1,9 @@
 // ── CLI Runner ───────────────────────────────────────────
 
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 import { seedRestaurants } from "./restaurant.seeder.js";
 import { seedDishes } from "./dishes.seeder.js";
-import mongoose from "mongoose";
 import { seedUsers } from "./users.seeder.js";
 dotenv.config(); // loads .env file
 
@@ -14,8 +14,8 @@ mongoose
   .connect(MONGO_URI)
   .then(async () => {
     console.log("🔌 Connected to MongoDB");
-    await seedRestaurants(20);
-    await seedDishes(30);
+    await seedRestaurants(50);
+    await seedDishes(50);
     await seedUsers();
     await mongoose.disconnect();
     console.log("👋 Disconnected");

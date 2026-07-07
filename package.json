@@ -18,7 +18,7 @@
     "docker:clean": "docker compose build backend",
     "docker:logs": "docker compose logs -f backend",
     "check:gitconfig": "git config user.name && git config user.email",
-    "seed:dev": "node seeders/index.js",
+    "seed:dev": "npx tsx src/seeders/index.ts",
     "seed": "node dist/seeders/index.js",
     "seed:docker": "docker compose exec backend npx tsx seeders/index.js",
     "docker:npm:i": "docker compose exec backend npm install",
