@@ -1,8 +1,8 @@
 import { Request } from "express";
-import Restaurants from "modules/restaurants/restaurant.model";
-import { NotFoundError } from "utils/errors";
-import { message } from "utils/messages";
-import Dishes from "./dishes.model";
+import Restaurants from "../restaurants/restaurant.model.js";
+import { NotFoundError } from "../../utils/errors.js";
+import { message } from "../../utils/messages.js";
+import Dishes from "./dishes.model.js";
 
 export const addDish = async (req: Request) => {
   const {

@@ -1,8 +1,10 @@
 import express from "express";
-import { restaurantDetails, restaurantsListing } from "./restaurant.controller";
-import { ADMIN_ROLE, ALL_ROLES } from "config/roles";
-import { validate } from "middlewares/validation";
-import { restaurantDetailsSchema } from "./restaurant.validate";
+import {
+  restaurantDetails,
+  restaurantsListing,
+} from "./restaurant.controller.js";
+import { restaurantDetailsSchema } from "./restaurant.validate.js";
+import { validate } from "../../middlewares/validation.js";
 
 const restaurantRouter = express.Router();
 

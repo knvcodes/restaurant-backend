@@ -15,7 +15,7 @@ import { Upload } from "@aws-sdk/lib-storage";
 import fs from "fs";
 import { Readable } from "stream";
 import { Response } from "express";
-import { UploadOptions, UploadResult } from "../utils/types";
+import { UploadOptions, UploadResult } from "../utils/types.js";
 
 export class StorageService {
   private client: S3Client;
@@ -127,15 +127,12 @@ export class StorageService {
       partSize: 5 * 1024 * 1024,
     });
 
-    upload.on(
-      "httpUploadProgress",
-      (progress) => {
-        const loaded = progress.loaded || 0;
-        const total = progress.total || 0;
-        const percent = total > 0 ? ((loaded / total) * 100).toFixed(2) : "0";
-        console.log(`Upload progress: ${percent}%`);
-      },
-    );
+    upload.on("httpUploadProgress", (progress) => {
+      const loaded = progress.loaded || 0;
+      const total = progress.total || 0;
+      const percent = total > 0 ? ((loaded / total) * 100).toFixed(2) : "0";
+      console.log(`Upload progress: ${percent}%`);
+    });
 
     await upload.done();
     return {

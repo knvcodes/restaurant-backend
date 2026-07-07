@@ -1,9 +1,11 @@
 import { Request, Response, NextFunction } from "express";
-import * as UsersService from "./users.service";
-import { handleResponse } from "utils/helpers";
-import logger from "utils/logger";
+import logger from "../../utils/logger.js";
 
-export const userssListing = async (req: Request, res: Response, next: NextFunction) => {
+export const userssListing = async (
+  req: Request,
+  _res: Response,
+  next: NextFunction,
+) => {
   try {
     // handleResponse(res, "List of users");
   } catch (error) {
@@ -16,6 +18,5 @@ export const userssListing = async (req: Request, res: Response, next: NextFunct
       body: req.body,
     });
     next(error);
-
   }
 };

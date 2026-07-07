@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, Model, Mongoose } from "mongoose";
+import mongoose, { Schema, Document, Model } from "mongoose";
 
 // Interface
 export interface IDishes extends Document {
@@ -47,17 +47,6 @@ const DishesSchema: Schema<IDishes> = new Schema(
   },
   {
     timestamps: true,
-
-    toJSON: {
-      transform(doc, ret) {
-        delete ret.__v; // bonus garbage removal
-      },
-    },
-    toObject: {
-      transform(doc, ret) {
-        delete ret.__v;
-      },
-    },
   },
 );
 

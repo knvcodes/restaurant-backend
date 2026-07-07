@@ -1,11 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import * as UploadService from "./upload.service";
-import { handleResponse } from "utils/helpers";
-import logger from "utils/logger";
+import logger from "../../utils/logger.js";
 
 export const uploadsListing = async (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction,
 ) => {
   try {

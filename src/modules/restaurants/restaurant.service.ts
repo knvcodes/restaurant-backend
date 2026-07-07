@@ -1,16 +1,16 @@
-import Restaurant from "./restaurant.model";
 import { Request } from "express";
 import mongoose, { FilterQuery } from "mongoose";
-import { NotFoundError } from "utils/errors";
-import { message } from "utils/messages";
-import { toRestaurantResponseDto } from "./restaurant.dto";
+import { toRestaurantResponseDto } from "./restaurant.dto.js";
+import { NotFoundError } from "../../utils/errors.js";
+import { message } from "../../utils/messages.js";
+import Restaurants from "./restaurant.model.js";
 
 export const listRestaurants = async (req: Request) => {
   const { search = null, limit = 10 } = <Record<string, string | number>>(
     req.query
   );
 
-  const where: FilterQuery<typeof Restaurant> = {};
+  const where: FilterQuery<typeof Restaurants> = {};
 
   if (search) {
     where["$or"] = [
@@ -19,7 +19,7 @@ export const listRestaurants = async (req: Request) => {
     ];
   }
 
-  const list = await Restaurant.find({
+  const list = await Restaurants.find({
     ...where,
   }).limit(Number(limit));
 
@@ -29,7 +29,7 @@ export const listRestaurants = async (req: Request) => {
 export const RestaurantDetail = async (req: Request) => {
   const { id } = req.params;
 
-  const foundRestaurant = await Restaurant.aggregate([
+  const foundRestaurant = await Restaurants.aggregate([
     {
       $match: { _id: new mongoose.Types.ObjectId(id) },
     },

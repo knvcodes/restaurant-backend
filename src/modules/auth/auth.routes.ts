@@ -1,19 +1,19 @@
 import express from "express";
-import { validate } from "middlewares/validation";
+import { validate } from "../../middlewares/validation.js";
 import {
   authForgotPassword,
   authLogin,
   authRegister,
   authResetPassword,
   oauthRegister,
-} from "./auth.controller";
+} from "./auth.controller.js";
 import {
   authForgotPasswordSchema,
   authLoginSchema,
   authRegisterSchema,
   authResetPasswordSchema,
-} from "./auth.validate";
-import { rateLimit } from "middlewares/ratelimiter.middleware";
+} from "./auth.validate.js";
+import { rateLimit } from "../../middlewares/ratelimiter.middleware.js";
 
 const authRouter = express.Router();
 

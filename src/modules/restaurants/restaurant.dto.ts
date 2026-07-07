@@ -1,5 +1,5 @@
-import { IDishes } from "modules/dishes/dishes.model";
-import { IRestaurant } from "./restaurant.model";
+import { IDishes } from "../dishes/dishes.model.js";
+import { IRestaurant } from "./restaurant.model.js";
 
 interface restaurantObj extends IRestaurant {
   dishes?: IDishes[];

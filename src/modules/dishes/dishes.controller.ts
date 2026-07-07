@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import * as DishesService from "./dishes.service";
-import { handleResponse } from "utils/helpers";
-import logger from "utils/logger";
-import { message } from "utils/messages";
+import * as DishesService from "./dishes.service.js";
+import { handleResponse } from "../../utils/helpers.js";
+import logger from "../../utils/logger.js";
+import { message } from "../../utils/messages.js";
 
 export const dishesListing = async (
   req: Request,

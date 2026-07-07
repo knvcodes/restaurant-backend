@@ -1,12 +1,12 @@
 import { NextFunction, Response } from "express";
-import { UnauthorizedError } from "utils/errors";
-import { includesRole, isEmpty } from "utils/helpers";
 import jwt from "jsonwebtoken";
-import { CustomRequest, TokenPayload } from "utils/types";
+import { CustomRequest, TokenPayload } from "../utils/types.js";
+import { includesRole, isEmpty } from "../utils/helpers.js";
+import { UnauthorizedError } from "../utils/errors.js";
 
 const auth =
   (roles: string[]) =>
-  (req: CustomRequest, res: Response, next: NextFunction) => {
+  (req: CustomRequest, _res: Response, next: NextFunction) => {
     const { accessToken } = req.cookies;
 
     console.info("cookie:===>", accessToken);

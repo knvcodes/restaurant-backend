@@ -9,7 +9,7 @@ export const uploadSingle = multer({
     fileSize: 10 * 1024 * 1024, // 10MB
   },
   fileFilter: (
-    req: Request,
+    _req: Request,
     file: Express.Multer.File,
     cb: multer.FileFilterCallback,
   ) => {
@@ -33,7 +33,7 @@ export const uploadMultiple = multer({
     files: 10,
   },
   fileFilter: (
-    req: Request,
+    _req: Request,
     file: Express.Multer.File,
     cb: multer.FileFilterCallback,
   ) => {
@@ -48,7 +48,7 @@ export const uploadMultiple = multer({
 
 export const handleMulterError = (
   err: any,
-  req: Request,
+  _req: Request,
   res: any,
   next: any,
 ) => {

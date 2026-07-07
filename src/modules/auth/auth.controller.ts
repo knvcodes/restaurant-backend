@@ -1,16 +1,15 @@
 import { Request, Response, NextFunction } from "express";
-import { handleResponse } from "utils/helpers";
-import logger from "utils/logger";
-import { message } from "utils/messages";
+import { handleResponse } from "../../utils/helpers.js";
+import logger from "../../utils/logger.js";
+import { message } from "../../utils/messages.js";
 import {
   forgotPassword,
   login,
   oauthLogin,
   register,
   resetPassword,
-} from "./auth.service";
-import { setTokenCookies } from "services/jwt.service";
-import { sendEmail } from "services/email.service";
+} from "./auth.service.js";
+import { setTokenCookies } from "../../services/jwt.service.js";
 
 export const authRegister = async (
   req: Request,

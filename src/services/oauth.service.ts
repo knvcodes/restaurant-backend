@@ -1,13 +1,13 @@
 // packages/backend/src/routes/auth.routes.ts
 import { Router } from "express";
 import axios from "axios";
-import Users from "modules/users/users.model";
-import { generateJWT } from "./jwt.service";
+import Users from "../modules/users/users.model.js";
+import { generateJWT } from "./jwt.service.js";
 
 const router = Router();
 
 // Step 1: Redirect user to Google
-router.get("/google", (req, res) => {
+router.get("/google", (_req, res) => {
   const googleAuthUrl = "https://accounts.google.com/o/oauth2/v2/auth";
 
   const params = new URLSearchParams({

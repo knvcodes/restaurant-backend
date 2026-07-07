@@ -1,5 +1,3 @@
-import { resetPassword } from "modules/auth/auth.service";
-
 export const message = {
   email: {
     appName: "Restaurant Management",

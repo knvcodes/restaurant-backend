@@ -1,7 +1,7 @@
 // middleware/validate.ts
 import { Request, Response, NextFunction } from "express";
 import { ZodSchema, ZodError } from "zod";
-import logger from "../utils/logger";
+import logger from "../utils/logger.js";
 
 export const validate = (schema: ZodSchema) => {
   return (req: Request, res: Response, next: NextFunction): void => {

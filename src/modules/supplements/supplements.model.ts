@@ -35,19 +35,6 @@ const SupplementsSchema: Schema<ISupplements> = new Schema(
   },
   {
     timestamps: true,
-
-    toJSON: {
-      transform(doc, ret) {
-        delete ret._id;
-        delete ret.__v; // bonus garbage removal
-      },
-    },
-    toObject: {
-      transform(doc, ret) {
-        delete ret._id;
-        delete ret.__v;
-      },
-    },
   },
 );
 

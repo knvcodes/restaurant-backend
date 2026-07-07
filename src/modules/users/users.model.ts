@@ -1,6 +1,6 @@
-import mongoose, { Schema, Document, Model, Types } from "mongoose";
+import mongoose, { Schema, Document, Model } from "mongoose";
 import bcrypt from "bcryptjs";
-import { ADMIN, CUSTOMER, OWNER } from "../../config/vars.ts";
+import { ADMIN, CUSTOMER, OWNER } from "../../config/vars.js";
 
 // Interface
 export interface IUsers extends Document {

@@ -1,7 +1,7 @@
 import express from "express";
-import { addDish, dishesListing } from "./dishes.controller";
-import { validate } from "middlewares/validation";
-import { addDishSchema, dishesListingSchema } from "./dishes.validate";
+import { validate } from "../../middlewares/validation.js";
+import { addDishSchema, dishesListingSchema } from "./dishes.validate.js";
+import { addDish, dishesListing } from "./dishes.service.js";
 
 const dishesRouter = express.Router();
 

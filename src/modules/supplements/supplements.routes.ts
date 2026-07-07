@@ -1,5 +1,5 @@
 import express from "express";
-import { supplementssListing } from "./supplements.controller";
+import { supplementssListing } from "./supplements.controller.js";
 
 const supplementsRouter = express.Router();
 

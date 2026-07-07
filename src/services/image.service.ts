@@ -1,8 +1,7 @@
 import sharp, { FormatEnum } from "sharp";
 import { v4 as uuidv4 } from "uuid";
-import path from "path";
-import StorageService from "./storage.service";
-import { ImageUploadResult, UploadResult, MulterFile } from "../utils/types";
+import StorageService from "./storage.service.js";
+import { ImageUploadResult, MulterFile, UploadResult } from "../utils/types.js";
 
 export class ImageService {
   private storage: StorageService;

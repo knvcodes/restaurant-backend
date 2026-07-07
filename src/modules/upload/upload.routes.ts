@@ -3,20 +3,20 @@ import {
   uploadSingle,
   uploadMultiple,
   handleMulterError,
-} from "../../middlewares/upload.middleware";
-import { ImageService } from "../../services/image.service";
+} from "../../middlewares/upload.middleware.js";
+import { ImageService } from "../../services/image.service.js";
 
-const router = Router();
+const uploadRouter = Router();
 
 // ============================================
 // GENERIC IMAGE UPLOAD
 // ============================================
 
-router.post(
+uploadRouter.post(
   "/upload-image",
   uploadSingle,
   handleMulterError,
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, _next: NextFunction) => {
     try {
       if (!req.file) {
         return res.status(400).json({ error: "No image provided" });
@@ -52,11 +52,11 @@ router.post(
 // MULTIPLE IMAGES
 // ============================================
 
-router.post(
+uploadRouter.post(
   "/upload-multiple-images",
   uploadMultiple,
   handleMulterError,
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, _next: NextFunction) => {
     try {
       if (!req.files || !Array.isArray(req.files)) {
         return res.status(400).json({ error: "No images provided" });
@@ -85,9 +85,9 @@ router.post(
 // DELETE
 // ============================================
 
-router.delete(
+uploadRouter.delete(
   "/*key",
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, _next: NextFunction) => {
     try {
       const imageService = req.app.locals.imageService as ImageService;
       const key = (req.params.key as unknown as string[]).join("/");
@@ -99,4 +99,4 @@ router.delete(
   },
 );
 
-export default router;
+export default uploadRouter;

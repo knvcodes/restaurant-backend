@@ -1,6 +1,6 @@
-import { ADMIN, CUSTOMER, OWNER } from "config/vars";
-import { message } from "utils/messages";
 import { z } from "zod";
+import { message } from "../../utils/messages.js";
+import { ADMIN, CUSTOMER, OWNER } from "../../config/vars.js";
 
 // Validation schema for listing auths
 export const authRegisterSchema = z.object({

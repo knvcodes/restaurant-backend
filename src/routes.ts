@@ -1,9 +1,9 @@
 import express from "express";
-import restaurantRouter from "modules/restaurants/restaurant.routes";
-import dishesRouter from "modules/dishes/dishes.routes";
-import supplementsRouter from "modules/supplements/supplements.routes";
-import uploadRouter from "modules/upload/upload.routes";
-import authRouter from "modules/auth/auth.routes";
+import restaurantRouter from "./modules/restaurants/restaurant.routes.js";
+import dishesRouter from "./modules/dishes/dishes.routes.js";
+import supplementsRouter from "./modules/supplements/supplements.routes.js";
+import authRouter from "./modules/auth/auth.routes.js";
+import uploadRouter from "./modules/upload/upload.routes.js";
 
 const router = express.Router();
 

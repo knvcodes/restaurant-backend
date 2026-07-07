@@ -1,6 +1,6 @@
 import { Response } from "express";
-import logger from "./logger";
-import { withLocation } from "./loggerHelper";
+import logger from "./logger.js";
+import { withLocation } from "./loggerHelper.js";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 

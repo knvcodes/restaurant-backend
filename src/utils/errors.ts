@@ -1,5 +1,5 @@
 import { ErrorRequestHandler } from "express";
-import logger from "./logger";
+import logger from "./logger.js";
 
 // errors.ts
 export class HttpError extends Error {

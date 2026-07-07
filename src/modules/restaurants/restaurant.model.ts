@@ -128,16 +128,6 @@ const RestaurantSchema: Schema<IRestaurant> = new Schema(
   },
   {
     timestamps: true,
-    toJSON: {
-      transform(doc, ret: Record<string, any>) {
-        delete ret.__v; // bonus garbage removal
-      },
-    },
-    toObject: {
-      transform(doc, ret: Record<string, any>) {
-        delete ret.__v;
-      },
-    },
   }, // adds createdAt and updatedAt
 );
 

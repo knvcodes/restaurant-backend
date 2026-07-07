@@ -1,4 +1,4 @@
-import { loadTemplate } from "utils/loadTemplate";
+import { loadTemplate } from "../utils/loadTemplate.js";
 
 export const generateEmailTemplate = async (
   name: string,

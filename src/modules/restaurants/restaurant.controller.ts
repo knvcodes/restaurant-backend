@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import logger from "utils/logger";
-import { listRestaurants, RestaurantDetail } from "./restaurant.service";
-import { handleResponse } from "utils/helpers";
-import { message } from "utils/messages";
+import { listRestaurants, RestaurantDetail } from "./restaurant.service.js";
+import { handleResponse } from "../../utils/helpers.js";
+import { message } from "../../utils/messages.js";
+import logger from "../../utils/logger.js";
 
 export const restaurantsListing = async (
   req: Request,

@@ -1,18 +1,25 @@
 import { Request, Response } from "express";
-import { ConflictError, NotFoundError, UnauthorizedError } from "utils/errors";
-import { message } from "utils/messages";
-import { generateRandomToken, isEmpty, passwordMatch } from "utils/helpers";
-import { generateJWT } from "services/jwt.service";
-import Users from "modules/users/users.model";
-import { verifyGoogleToken } from "config/google";
+import {
+  ConflictError,
+  NotFoundError,
+  UnauthorizedError,
+} from "../../utils/errors.js";
+import { message } from "../../utils/messages.js";
+import {
+  generateRandomToken,
+  isEmpty,
+  passwordMatch,
+} from "../../utils/helpers.js";
+import { generateJWT } from "../../services/jwt.service.js";
+import Users from "../../modules/users/users.model.js";
+import { verifyGoogleToken } from "../../config/google.js";
 import {
   isResetPasswordTokenValid,
   saveForgetPasswordToken,
-} from "services/redis.service";
-import { sendEmail } from "services/email.service";
-import { welcomeStyles } from "templates/welcome.styles";
-import { generateEmailTemplate } from "services/template.service";
-import { title } from "process";
+} from "../../services/redis.service.js";
+import { sendEmail } from "../../services/email.service.js";
+import { welcomeStyles } from "../../templates/welcome.styles.js";
+import { generateEmailTemplate } from "../../services/template.service.js";
 
 export const register = async (req: Request) => {
   try {
@@ -56,7 +63,7 @@ export const register = async (req: Request) => {
   }
 };
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, _res: Response) => {
   try {
     const { password, email } = req.body;
 
@@ -206,7 +213,7 @@ export const forgotPassword = async (req: Request) => {
 
 export const resetPassword = async (req: Request) => {
   try {
-    const { token, newPassword, confirmPassword } = req.body;
+    const { token, newPassword } = req.body;
 
     // validate token
     const userId = await isResetPasswordTokenValid(token);

@@ -1,12 +1,12 @@
-import { redisClient } from "config/redis";
 import { NextFunction, Request, Response } from "express";
-import { ForbiddenError } from "utils/errors";
+import { redisClient } from "../config/redis.js";
+import { ForbiddenError } from "../utils/errors.js";
 
 const RATE = "rate:";
 
 export const rateLimit = async (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction,
 ) => {
   const { email } = req.body;

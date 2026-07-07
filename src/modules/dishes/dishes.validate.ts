@@ -1,5 +1,5 @@
-import { message } from "utils/messages";
 import { z } from "zod";
+import { message } from "../../utils/messages.js";
 
 // Schema for adding a new dish
 export const addDishSchema = z.object({

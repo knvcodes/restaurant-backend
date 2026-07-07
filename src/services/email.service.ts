@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { InternalError } from "utils/errors";
+import { InternalError } from "../utils/errors.js";
 
 // options include smpt server host and port
 const transporter = nodemailer.createTransport({

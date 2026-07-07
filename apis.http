@@ -26,7 +26,7 @@ Content-Type: {{contentType}}
 
 {
   "email": "john.smith@restaurant.com",
-  "password": "Owner@1234"
+  "password": "Owner@123"
 }
 
 ### forgot password
