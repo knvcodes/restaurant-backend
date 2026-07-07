@@ -1,7 +1,6 @@
-import mongoose from "mongoose";
-import Restaurants from "../src/modules/restaurants/restaurant.model.ts";
-
 // ── Helpers ─────────────────────────────────────────────
+
+import Restaurants from "../modules/restaurants/restaurant.model.js";
 
 const restaurantNames = [
   "Morris Park Bake Shop",
@@ -83,11 +82,11 @@ const restaurantDescriptions = [
 const currencies = ["INR", "USD", "EUR"];
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-function pickRandom(arr) {
+function pickRandom(arr: string | any[]) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-function getRandomInt(min, max) {
+function getRandomInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 

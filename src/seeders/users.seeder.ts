@@ -1,6 +1,6 @@
 // seeder/users.seeder.js
-import mongoose from "mongoose";
-import Users from "../src/modules/users/users.model.ts";
+
+import Users from "../modules/users/users.model.js";
 
 // Static user data
 const STATIC_USERS = [

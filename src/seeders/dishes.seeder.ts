@@ -1,10 +1,9 @@
-import { randomUUID } from "node:crypto";
-import Dishes from "../src/modules/dishes/dishes.model.ts";
-import Restaurants from "../src/modules/restaurants/restaurant.model.ts";
-import Supplements from "../src/modules/supplements/supplements.model.ts";
-import { type } from "node:os";
-
 // ── Sample Data ────────────────────────────────────────
+
+import { Types } from "mongoose";
+import Dishes from "../modules/dishes/dishes.model.js";
+import Restaurants from "../modules/restaurants/restaurant.model.js";
+import Supplements from "../modules/supplements/supplements.model.js";
 
 const dishNames = [
   "Margherita Pizza",
@@ -72,17 +71,17 @@ const currencies = ["INR", "USD", "EUR"];
 
 // ── Helpers ────────────────────────────────────────────
 
-function pickRandom(arr) {
+function pickRandom(arr: string | any[]) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-function getRandomInt(min, max) {
+function getRandomInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 // ── Builders ───────────────────────────────────────────
 
-function buildServing(basePrice) {
+function buildServing(basePrice: number) {
   const servings = [];
   const count = getRandomInt(1, 4);
 
@@ -109,7 +108,7 @@ function buildTags() {
   return tags;
 }
 
-function buildSupplements(supplementIds) {
+function buildSupplements(supplementIds: any) {
   const supplements = [];
   const count = getRandomInt(0, 3);
 
@@ -136,7 +135,7 @@ export async function seedDishes(count = 30) {
     const supplements = await Supplements.find()
       .select("_id restaurantId")
       .lean();
-    const supplementsByRestaurant = {};
+    const supplementsByRestaurant: Record<string, Types.ObjectId[]> = {};
     for (const s of supplements) {
       const key = String(s.restaurantId);
       if (!supplementsByRestaurant[key]) supplementsByRestaurant[key] = [];
