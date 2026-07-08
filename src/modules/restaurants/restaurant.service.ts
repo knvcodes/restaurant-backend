@@ -52,5 +52,15 @@ export const RestaurantDetail = async (req: Request) => {
     throw new NotFoundError(message.failed.restaurantNotFound);
   }
 
+  // increment views
+  await Restaurants.updateOne(
+    { _id: id },
+    {
+      $inc: {
+        "stats.totalViews": 1,
+      },
+    },
+  );
+
   return toRestaurantResponseDto(foundRestaurant[0]);
 };

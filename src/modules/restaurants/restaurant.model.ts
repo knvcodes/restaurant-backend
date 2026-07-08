@@ -53,6 +53,11 @@ export interface IRestaurant extends Document {
     amount: number;
     currency: string;
   };
+
+  stats: {
+    totalOrders: { type: Number; default: 0 };
+    totalViews: { type: Number; default: 0 };
+  };
 }
 
 // 2. Schema definitions
@@ -124,6 +129,11 @@ const RestaurantSchema: Schema<IRestaurant> = new Schema(
         currency: { type: String, enum: ["INR", "USD", "EUR"], default: "USD" },
       },
       default: { amount: 0, currency: "USD" },
+    },
+
+    stats: {
+      totalOrders: { type: Number, default: 0 },
+      totalViews: { type: Number, default: 0 },
     },
   },
   {

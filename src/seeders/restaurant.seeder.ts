@@ -303,6 +303,10 @@ export async function seedRestaurants(count = 50) {
         deliveryFee: buildMoney(),
         cancellationFee: buildMoney(),
         minimumDelivery: buildMoney(),
+        stats: {
+          totalOrders: 0,
+          totalViews: 0,
+        },
       });
     }
 

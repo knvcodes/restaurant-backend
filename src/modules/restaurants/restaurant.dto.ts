@@ -38,6 +38,8 @@ export const toRestaurantResponseDto = (restaurantObj: restaurantObj) => ({
 
   grades: restaurantObj.grades,
 
+  views: restaurantObj.stats.totalViews,
+
   createdAt: restaurantObj.createdAt,
   updatedAt: restaurantObj.updatedAt,
 });
