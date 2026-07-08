@@ -93,3 +93,8 @@ Default endpoints:
 | 2   | Bob Martin   | `bob@email.com`   | `Customer@123` |
 
 ---
+
+## Checking logs and reading
+
+- Install jq if in linux
+- Run this from logs directory: cat error.log | jq '.'

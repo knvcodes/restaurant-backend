@@ -31,7 +31,6 @@ authRouter.post(
   validate(authResetPasswordSchema),
   authResetPassword,
 );
-// authRouter.post("/changePassword", authRegister);
 
 // google ouath
 authRouter.post("/oauth", oauthRegister);
