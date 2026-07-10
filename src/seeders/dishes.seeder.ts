@@ -244,29 +244,36 @@ export async function seedDishes(count = 30) {
     await Dishes.deleteMany({});
     console.log("🗑️  Cleared existing dishes");
 
-    // 4. Create new dishes
-    for (let i = 0; i < count; i++) {
-      const restaurantId = pickRandom(restaurantIds);
-      const basePrice = getRandomInt(50, 800);
+    // 4. Create dishes for each restaurant
+    for (const restaurantId of restaurantIds) {
+      // Determine how many dishes to create for this restaurant
+      const dishesCount = getRandomInt(3, 8);
       const availableSupplements =
         supplementsByRestaurant[String(restaurantId)] || [];
 
-      await Dishes.create({
-        name: dishNames[i % dishNames.length],
-        description: pickRandom(dishDescriptions),
-        isActive: Math.random() > 0.1,
-        tags: buildTags(),
-        metadata: {
-          calories: getRandomInt(150, 1200),
-          prepTimeMinutes: getRandomInt(5, 45),
-          spicyLevel: getRandomInt(0, 5),
-        },
-        supplements: buildSupplements(availableSupplements),
-        serving: buildServing(basePrice),
-        restaurantId,
-      });
-    }
+      console.log(
+        `🍽️  Creating ${dishesCount} dishes for restaurant ${restaurantId}`,
+      );
 
+      for (let i = 0; i < dishesCount; i++) {
+        const basePrice = getRandomInt(50, 800);
+
+        await Dishes.create({
+          name: dishNames[(count + i) % dishNames.length],
+          description: pickRandom(dishDescriptions),
+          isActive: Math.random() > 0.1,
+          tags: buildTags(),
+          metadata: {
+            calories: getRandomInt(150, 1200),
+            prepTimeMinutes: getRandomInt(5, 45),
+            spicyLevel: getRandomInt(0, 5),
+          },
+          supplements: buildSupplements(availableSupplements),
+          serving: buildServing(basePrice),
+          restaurantId,
+        });
+      }
+    }
     console.log(`✅ Seeded ${count} dishes`);
   } catch (error) {
     console.error("❌ Dish seeder failed:", error);
