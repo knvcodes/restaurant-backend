@@ -89,7 +89,6 @@ export const login = async (req: Request, _res: Response) => {
         role: findUser.role,
       });
 
-      console.info("findUser:===>", findUser);
       const storageService = req.app.locals.storageService as StorageService;
       const signedUrl = await getAvatarUrl(
         storageService,
@@ -123,8 +122,6 @@ export const oauthLogin = async (req: Request) => {
 
     // invalid token throw error
     if (!payload) throw new UnauthorizedError("Invalid Token");
-
-    console.info("payload:===>", payload);
 
     // 2. Extract user info
     const { sub: googleId, email, name, picture } = payload;
