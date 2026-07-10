@@ -46,7 +46,7 @@ app.use(express.json());
     const storageService = new StorageService(s3Client, BUCKET_NAME);
 
     console.log("⏳ Checking MinIO bucket...");
-    // await storageService.ensureBucketExists();
+    await storageService.ensureBucketExists();
     console.log("✓ MinIO connected");
 
     // Make services available to routes

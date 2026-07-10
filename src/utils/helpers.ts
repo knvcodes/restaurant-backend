@@ -3,6 +3,7 @@ import logger from "./logger.js";
 import { withLocation } from "./loggerHelper.js";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
+import StorageService from "../services/storage.service.js";
 
 export const handleResponse = (res: Response, msg: string, data?: unknown) => {
   res.json({
@@ -59,4 +60,12 @@ export const includesRole = (role: string, toCheckInArray: string[]) => {
 
 export const generateRandomToken = () => {
   return crypto.randomBytes(32).toString("hex");
+};
+
+export const getAvatarUrl = async (
+  storageService: StorageService,
+  key: string,
+) => {
+  const signedUrl = await storageService.getSignedUrl(key);
+  return signedUrl ? signedUrl : null;
 };

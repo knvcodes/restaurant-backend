@@ -1,20 +1,10 @@
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose, { Schema, Model } from "mongoose";
 import bcrypt from "bcryptjs";
 import { ADMIN, CUSTOMER, OWNER } from "../../config/vars.js";
-
-// Interface
-export interface IUsers extends Document {
-  name: string;
-  email: string;
-  password: string;
-  role: string;
-  avatar?: string;
-  isOAuth: boolean;
-  googleId?: string;
-}
+import { Users } from "../../utils/types.js";
 
 // Schema
-const UsersSchema: Schema<IUsers> = new Schema(
+const UsersSchema: Schema<Users> = new Schema(
   {
     name: { type: String, required: true, minlength: 3, maxlength: 50 },
     email: {
@@ -54,6 +44,6 @@ UsersSchema.pre("save", async function (next) {
 });
 
 // Model
-const Users: Model<IUsers> = mongoose.model<IUsers>("Users", UsersSchema);
+const Users: Model<Users> = mongoose.model<Users>("Users", UsersSchema);
 
 export default Users;

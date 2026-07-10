@@ -52,3 +52,26 @@ export interface CustomRequest extends Request {
     id: string;
   };
 }
+
+// Extend Express Request interface
+declare global {
+  namespace Express {
+    interface Request {
+      user?: {
+        id: string;
+        // add other user properties as needed
+      };
+    }
+  }
+}
+
+// Interface
+export interface Users extends Document {
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+  avatar?: string;
+  isOAuth: boolean;
+  googleId?: string;
+}

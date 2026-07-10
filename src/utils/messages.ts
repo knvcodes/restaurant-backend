@@ -18,12 +18,15 @@ export const message = {
       forgotPasswordLink:
         "A reset link has been sent to your registered email.",
       resetPassword: "Password has been reset successfully.",
+      updateAvatar: "Avatar updated successfully.",
+      profile: "User profile fetched successfully",
     },
   },
   failed: {
     restaurantNotFound: "Restaurant not found for given id",
     user: {
       notFound: "User with email associated not found.",
+      userNotFound: "User not found",
       incorrectPassword: "Password provided is incorrect",
       emailAlreadtExists:
         "Provided email is already used. Please use another email",

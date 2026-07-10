@@ -7,6 +7,7 @@ import {
 import { message } from "../../utils/messages.js";
 import {
   generateRandomToken,
+  getAvatarUrl,
   isEmpty,
   passwordMatch,
 } from "../../utils/helpers.js";
@@ -20,6 +21,7 @@ import {
 import { sendEmail } from "../../services/email.service.js";
 import { welcomeStyles } from "../../templates/welcome.styles.js";
 import { generateEmailTemplate } from "../../services/template.service.js";
+import StorageService from "../../services/storage.service.js";
 
 export const register = async (req: Request) => {
   try {
@@ -69,7 +71,7 @@ export const login = async (req: Request, _res: Response) => {
 
     const findUser = await Users.findOne({
       email,
-    }).select("name password role");
+    }).select("name password role avatar");
 
     // user not found
     if (!findUser) {
@@ -87,9 +89,17 @@ export const login = async (req: Request, _res: Response) => {
         role: findUser.role,
       });
 
+      console.info("findUser:===>", findUser);
+      const storageService = req.app.locals.storageService as StorageService;
+      const signedUrl = await getAvatarUrl(
+        storageService,
+        findUser.avatar || "",
+      );
+
       const userPayload = {
         name: findUser.name,
         role: findUser.role,
+        avatar: signedUrl || "",
       };
 
       return { tokens, userPayload };

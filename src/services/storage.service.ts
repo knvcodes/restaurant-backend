@@ -33,6 +33,10 @@ export class StorageService {
   // ============================================
 
   async ensureBucketExists(retries = 5): Promise<void> {
+    if (process.env.NODE_ENV !== "dev") {
+      return;
+    }
+
     for (let i = 0; i < retries; i++) {
       try {
         await this.client.send(new HeadBucketCommand({ Bucket: this.bucket }));
@@ -199,7 +203,7 @@ export class StorageService {
 
   async getSignedUrl(
     key: string,
-    expiresIn: number = 3600,
+    expiresIn: number = 60,
     operation: "get" | "put" = "get",
   ): Promise<string> {
     const command =
