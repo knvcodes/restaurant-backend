@@ -18,6 +18,15 @@ uploadRouter.post(
   handleMulterError,
   async (req: Request, res: Response, _next: NextFunction) => {
     try {
+      if (process.env.NODE_ENV !== "dev") {
+        res.json({
+          success: true,
+          data: {
+            key: "test",
+          },
+        });
+      }
+
       if (!req.file) {
         return res.status(400).json({ error: "No image provided" });
       }

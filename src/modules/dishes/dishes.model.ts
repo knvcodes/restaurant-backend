@@ -36,6 +36,7 @@ const DishesSchema: Schema<IDishes> = new Schema(
         value: { type: Number },
         price: { type: Number },
         currency: { type: String },
+        total: { type: Number },
       },
     ],
     restaurantId: {

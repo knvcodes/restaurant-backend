@@ -190,6 +190,7 @@ function buildServing(basePrice: number) {
       value: i + 1,
       price: parseFloat((basePrice * (1 + i * 0.5)).toFixed(2)),
       currency: pickRandom(currencies),
+      total: 0,
     });
   }
   return servings;
