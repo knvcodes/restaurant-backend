@@ -5,6 +5,7 @@ import supplementsRouter from "./modules/supplements/supplements.routes.js";
 import authRouter from "./modules/auth/auth.routes.js";
 import uploadRouter from "./modules/upload/upload.routes.js";
 import usersRouter from "./modules/users/users.routes.js";
+import ownerRouter from "./modules/owner/owner.routes.js";
 
 const router = express.Router();
 
@@ -12,11 +13,14 @@ router.use("/restaurants", restaurantRouter);
 router.use("/dishes", dishesRouter);
 router.use("/supplements", supplementsRouter);
 
-// owner auth
+// auth
 router.use("/auth", authRouter);
 
 // user
 router.use("/user", usersRouter);
+
+// owner routes
+router.use("/owner", ownerRouter);
 
 // upload section
 router.use("/upload", uploadRouter);

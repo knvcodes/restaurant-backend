@@ -297,7 +297,7 @@ export async function seedRestaurants(count = 50) {
 
     for (let i = 0; i < count; i++) {
       await Restaurants.create({
-        owner_id: owners[getRandomInt(0, owners.length - 1)].id,
+        owner_id: owners[getRandomInt(0, owners.length - 1)]._id,
         name: restaurantNames[i],
         borough: pickRandom(boroughs),
         cuisine: pickRandom(cuisines),

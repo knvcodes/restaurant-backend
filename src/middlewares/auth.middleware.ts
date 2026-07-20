@@ -8,6 +8,7 @@ const auth =
   (roles: string[]) => (req: Request, _res: Response, next: NextFunction) => {
     const { accessToken } = req.cookies;
 
+    // reject if no login token
     if (isEmpty(accessToken)) {
       throw new UnauthorizedError();
     }
