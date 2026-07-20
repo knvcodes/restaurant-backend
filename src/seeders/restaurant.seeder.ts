@@ -1,6 +1,7 @@
 // ── Helpers ─────────────────────────────────────────────
 
 import Restaurants from "../modules/restaurants/restaurant.model.js";
+import Users from "../modules/users/users.model.js";
 const restaurantNames = [
   "Morris Park Bake Shop",
   "The Corner Bistro",
@@ -287,11 +288,16 @@ function buildOpenDays() {
 
 export async function seedRestaurants(count = 50) {
   try {
+    const owners = await Users.find({
+      role: "owner",
+    });
+
     await Restaurants.deleteMany({});
     console.log("🗑️  Cleared existing restaurants");
 
     for (let i = 0; i < count; i++) {
       await Restaurants.create({
+        owner_id: owners[getRandomInt(0, owners.length - 1)].id,
         name: restaurantNames[i],
         borough: pickRandom(boroughs),
         cuisine: pickRandom(cuisines),

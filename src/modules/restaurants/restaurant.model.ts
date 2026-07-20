@@ -38,6 +38,7 @@ export interface IRestaurant extends Document {
   description?: string;
   deliveryHours: IDeliveryHours;
   openDays: IOpenDays;
+  owner_id: Schema.Types.ObjectId;
 
   deliveryFee?: {
     amount: number;
@@ -99,6 +100,11 @@ const OpenDaysSchema: Schema<IOpenDays> = new Schema(
 const RestaurantSchema: Schema<IRestaurant> = new Schema(
   {
     restaurant_id: { type: String, index: true, unique: true },
+    owner_id: {
+      type: Schema.Types.ObjectId,
+      ref: "Restaurants",
+      required: true,
+    },
     name: { type: String, required: true },
     borough: { type: String, required: true },
     cuisine: { type: String, required: true },
