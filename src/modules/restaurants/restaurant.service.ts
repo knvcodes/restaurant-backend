@@ -6,9 +6,10 @@ import { message } from "../../utils/messages.js";
 import Restaurants from "./restaurant.model.js";
 
 export const listRestaurants = async (req: Request) => {
-  const { search = null, limit = 10 } = <Record<string, string | number>>(
-    req.query
-  );
+  const { search = null, limit = 10, page = 1 } = req.query;
+
+  // pagination
+  const skip = (Number(page) - 1) * Number(limit);
 
   const where: FilterQuery<typeof Restaurants> = {};
 
@@ -21,9 +22,19 @@ export const listRestaurants = async (req: Request) => {
 
   const list = await Restaurants.find({
     ...where,
-  }).limit(Number(limit));
+  })
+    .skip(skip)
+    .limit(Number(limit));
 
-  return list.map(toRestaurantResponseDto);
+  // Get total count
+  const total = await Restaurants.countDocuments(where);
+
+  const hasNextPage = Number(page) * Number(limit) < total;
+
+  return {
+    data: list.map(toRestaurantResponseDto),
+    hasNextPage,
+  };
 };
 
 export const RestaurantDetail = async (req: Request) => {

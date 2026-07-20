@@ -10,8 +10,8 @@ export const restaurantsListing = async (
   next: NextFunction,
 ) => {
   try {
-    const list = await listRestaurants(req);
-    handleResponse(res, message.success.restaurant.fetch, list);
+    const data = await listRestaurants(req);
+    handleResponse(res, message.success.restaurant.fetch, data);
   } catch (error) {
     logger.error({
       message: "Error in restaurantsListing",
