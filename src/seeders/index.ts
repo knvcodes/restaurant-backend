@@ -14,9 +14,9 @@ mongoose
   .connect(MONGO_URI)
   .then(async () => {
     console.log("🔌 Connected to MongoDB");
+    await seedUsers();
     await seedRestaurants(50);
     await seedDishes(50);
-    await seedUsers();
     await mongoose.disconnect();
     console.log("👋 Disconnected");
     process.exit(0);

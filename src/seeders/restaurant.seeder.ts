@@ -311,7 +311,7 @@ export async function seedRestaurants(count = 50) {
         minimumDelivery: buildMoney(),
         stats: {
           totalOrders: 0,
-          totalViews: 0,
+          totalViews: getRandomInt(10, 200),
         },
       });
     }
